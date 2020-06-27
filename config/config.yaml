@@ -1,0 +1,15 @@
+app_name: blog-go-gin
+app_key: wregwrsdfsgpoipngprnsvrsfsd
+app_debug: true
+app_url: http://localhost
+
+# 数据库配置
+db_connection: mysql
+db_host: localhost
+db_port: 3306
+db_database: blog_go_gin
+db_username: blog_go_gin
+db_password: blog_go_gin
+
+# 服务
+server_port: :8080
