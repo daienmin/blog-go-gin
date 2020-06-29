@@ -1,0 +1,137 @@
+{{ define "admin/index.html" }}
+{{ template "admin/header.html" }}
+<div id="content">
+	{{/*<div id="content-header" class="mini"><h1>仪表盘</h1></div>*/}}
+	<div id="breadcrumb">
+		<a href="" title="回到首页" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+		<a href="" class="current">仪表盘</a>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 center" style="text-align: center;">					
+				<ul class="quick-actions">
+					<li><a href="#"><i class="icon-cal"></i>已运行：1 天</a></li>
+					<li><a href=""><i class="icon-mail"></i>邮件设置</a></li>
+					<li><a href=""><i class="icon-user"></i>用户管理</a></li>
+					<li><a href=""><i class="icon-survey"></i>写说说</a></li>
+					<li><a href=""><i class="icon-survey"></i>写文章</a></li>
+					<li><a href="#"><i class="icon-graph"></i>站长统计</a></li>
+				</ul>
+			</div>	
+		</div><br />
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="fa fa-signal"></i></span><h5>站点统计</h5>
+						<div class="buttons">
+							<a href="#" class="btn"><i class="fa fa-refresh"></i> <span class="text">更新</span></a>
+						</div>
+					</div>
+					<div class="widget-content">
+						<div class="row">
+							<div class="col-xs-12 col-sm-4">
+								<ul class="site-stats">
+									<li><div class="cc"><i class="fa fa-eye"></i> <strong>1</strong> <small>次访问</small></div></li>
+									<li><div class="cc"><i class="fa fa-edit"></i> <strong>1</strong> <small>篇说说</small></div></li>
+									<li><div class="cc"><i class="fa fa-comment"></i> <strong>1</strong> <small>条评论</small></div></li>
+									<li><div class="cc"><i class="fa fa-comments"></i> <strong>1</strong> <small>条留言</small></div></li>
+									<li><div class="cc"><i class="fa fa-picture-o"></i> <strong>1</strong> <small>张图片</small></div></li>
+								</ul>
+							</div>
+							<div class="col-xs-12 col-sm-4">
+								<ul class="site-stats">
+									<li><div class="cc"><i class="fa fa-edit"></i> <strong>1</strong> <small>篇文章</small></div></li>
+									
+									<li><div class="cc"><i class="fa fa-comment"></i> <strong>1</strong> <small>个相册</small></div></li>
+									<li><div class="cc"><i class="fa fa-comments"></i> <strong>1</strong> <small>条外链</small></div></li>
+									<li class="divider"></li>
+									<li><div class="cc">程序官网：<a href="daiem.com" target="_blank">&nbsp;&nbsp;daiem.com</a></div></li>
+									<li><div class="cc">程序作者：代恩民</div></li>
+								</ul>
+							</div>
+							<div class="col-xs-12 col-sm-4">
+								<ul class="site-stats">
+									<li><div class="cc">QQ ： 952423380</div></li>
+									<li><div class="cc">服务器版本 ：v1.0</div></li>
+									<li><div class="cc">服务器IP：127.0.0.1</div></li>
+									<li><div class="cc">PHP版本：0</div></li>
+									<li><div class="cc">数据库信息：v8.0</div></li>
+								</ul>
+							</div>		
+						</div>							
+					</div>
+				</div>					
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="widget-box">
+					<div class="widget-title"><span class="icon"><i class="fa fa-comment"></i></span><h5>评论</h5></div>
+					<div class="widget-content nopadding">
+						<ul class="recent-posts">
+		        			<li>
+		        				<div class="user-thumb"><img src="" width="40" height="40"/></div>
+		        				<div class="article-post">
+		        				<span class="user-info"> By: admin on 2020-06-20 12:44:55, IP：127.0.0.1 在文章中评论</span>
+		          				<p>&nbsp;&nbsp;这里是评论内容</p>
+		          				<a class="btn btn-primary btn-xs">已回复</a>
+		          				<a href="" class="btn btn-primary btn-xs">回复</a>
+		          				 <a href="" class="btn btn-danger btn-xs">删除</a>
+		          				</div>
+		        			</li>
+			        			<li>
+			        			<div class="user-thumb"><img src="" width="40" height="40"/></div>
+		        				<div class="article-post">
+		        				<span class="user-info"> By: admin on 2020-06-20 12:44:55, IP：127.0.0.1 在相册中评论</span>
+		          				<p>&nbsp;&nbsp;评论内容啊</p>
+		          				<a class="btn btn-primary btn-xs">已回复</a>
+		          				<a href="" class="btn btn-primary btn-xs">回复</a>
+		          				<a href="" class="btn btn-danger btn-xs">删除</a>
+		          				</div>
+		          				</li>
+			        			<li>
+			        			<div class="user-thumb"><img src="" width="40" height="40"/></div>
+		        				<div class="article-post">
+		        				<span class="user-info"> By: admin on 2020-06-20 12:44:55, IP：127.0.0.1 在相册中评论</span>
+		          				<p>&nbsp;&nbsp;评论内容啊</p>
+		          				<a class="btn btn-primary btn-xs">已回复</a>
+		          				<a href="" class="btn btn-primary btn-xs">回复</a>
+		          				<a href="" class="btn btn-danger btn-xs">删除</a>
+		          				</div>
+		          				</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="widget-box">
+					<div class="widget-title"><span class="icon"><i class="fa fa-comments"></i></span><h5>留言</h5></div>
+					<div class="widget-content nopadding">
+						<ul class="recent-comments">
+							<li>
+								<div class="user-thumb">
+									<img width="40" height="40" src="">
+								</div>
+								<div class="comments">
+									<span class="user-info"> User: admin on 2020-06-20 12:44:55, IP: 127.0.0.1 </span>
+									<p>&nbsp;&nbsp;评论内容啊</p>
+		          						<a class="btn btn-primary btn-xs">已回复</a>
+		          						<a href="" class="btn btn-primary btn-xs">回复</a>
+									<a href="" class="btn btn-danger btn-xs">删除</a>
+								</div>
+							</li>
+							<li class="viewall">
+								<a title="查看全部" class="tip-top" href=""> + 查看全部 + </a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</div>
+</div>
+{{ template "admin/footer.html" }}
+</body>
+</html>
+{{ end }}

@@ -1,0 +1,114 @@
+{{ define "admin/header.html" }}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>后台管理系统</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/public/css/admin/bootstrap.min.css" />
+		<link rel="stylesheet" href="/public/css/admin/my.css" />	
+		<link rel="stylesheet" href="/public/css/admin/unicorn.css" />
+		<link rel="shortcut icon" href="/Public/Img/icon/favicon.ico" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="/public/js/admin/respond.min.js"></script>
+		<![endif]-->
+        <link rel="shortcut icon" href="/public/images/fav.ico" />
+	</head>
+	<body data-color="grey" class="flat">
+	<div id="wrapper">
+			<div id="header">
+				<h1><a href="">Admin</a></h1>
+				<a id="menu-trigger" href="#"><i class="fa fa-bars"></i></a>	
+			</div>
+		
+			<div id="user-nav">
+	            <ul class="btn-group">
+	                <li class="btn" >
+	                	<a title="" href="#">
+	                		<i class="fa fa-user"></i> 
+	                		<span class="text">admin</span>
+	                	</a>
+	                </li>
+	                <li class="btn"><a title="" href=""><i class="fa fa-cog"></i> <span class="text">系统设置</span></a></li>
+	                <li class="btn"><a title="" href="/admin/logout"><i class="fa fa-share"></i> <span class="text">退出</span></a></li>
+	            </ul>
+	        </div>
+	       
+			<div id="sidebar">
+				<ul>
+					<li><a href="/admin/index"><i class="fa fa-dashboard"></i> <span>首页</span></a></li>
+					<li><a href="/" target="_blank"><i class="fa fa-home"></i> <span>前端首页</span></a></li>
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-tags"></i> <span>栏目管理</span><i class="arrow fa fa-chevron-right"></i></a>
+                        <ul>
+                            <li><a href="/admin/category/add">新增栏目</a></li>
+                            <li><a href="/admin/category/index">栏目列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-th"></i> <span>内容管理</span> <i class="arrow fa fa-chevron-right"></i></a>
+                        <ul>
+                            <li><a href="">文章列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-flask"></i> <span>发布内容</span> <i class="arrow fa fa-chevron-right"></i></a>
+                        <ul>
+                            <li><a href="">发布说说</a></li>
+                            <li><a href="">发布文章</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-comment"></i> <span>互动管理</span><i class="arrow fa fa-chevron-right"></i></a>
+                        <ul>
+                            <li><a href="">说说评论</a></li>
+                            <li><a href="">文章评论</a></li>
+                            <li><a href="">留言评论</a></li>
+                            <li><a href="">相册评论</a></li>
+                        </ul>
+                    </li>
+					<li class="submenu">
+						<a href="#"><i class="fa fa-user-md"></i> <span>用户管理</span><i class="arrow fa fa-chevron-right"></i></a>
+						<ul>
+							<li><a href="">新增用户</a></li>
+							<li><a href="">用户列表</a></li>
+						</ul>
+					</li>
+					<li class="submenu">
+						<a href="#"><i class="fa fa-link"></i> <span>链接设置</span><i class="arrow fa fa-chevron-right"></i></a>
+						<ul>
+							<li><a href="">新增链接</a></li>
+							<li><a href="">链接列表</a></li>
+						</ul>
+					</li>
+
+					<li class="submenu">
+						<a href="#"><i class="fa fa-folder-open"></i> <span>相册管理</span><i class="arrow fa fa-chevron-right"></i></a>
+						<ul>
+							<li><a href="">新增相册</a></li>
+							<li><a href="">相册列表</a></li>
+						</ul>
+					</li>
+
+					<li class="submenu">
+						<a href="#"><i class="fa fa-picture-o"></i> <span>图片管理</span><i class="arrow fa fa-chevron-right"></i></a>
+						<ul>
+							<li><a href="">新增图片</a></li>
+							<li><a href="">图片列表</a></li>
+						</ul>
+					</li>
+					<li class="submenu">
+						<a href="#"><i class="fa fa-windows"></i> <span>系统设置</span> <i class="arrow fa fa-chevron-right"></i></a>
+						<ul>
+							<li><a href="">基本设置</a></li>
+							<!--<li><a onclick="alert('单页设置开发中')">单页设置</a></li>-->
+							<li><a href="">邮件设置</a></li>
+							<li><a href="">幻灯设置</a></li>
+							<li><a href="">清除缓存</a></li>
+							<!--<li><a href="#" onclick="alert('高级功能开发中')">高级设置</a></li>-->
+						</ul>
+					</li>
+				</ul>			
+			</div>		
+{{ end }}
