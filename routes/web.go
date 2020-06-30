@@ -37,8 +37,9 @@ func WebRoutes(r *gin.Engine) {
 	// 栏目管理
 	adminRoute.GET("/category/index", admin.CateIndex)
 	adminRoute.GET("/category/add", admin.CateAdd)
+	adminRoute.POST("/category/add", admin.CateCreate)
 	adminRoute.GET("/category/edit/:id", admin.CateEdit)
-	adminRoute.GET("/category/del/:id", admin.CateDel)
+	adminRoute.POST("/category/del", admin.CateDel)
 
 	// 文章管理
 	adminRoute.GET("/article/index", admin.ArticleIndex)

@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"encoding/json"
 	"blog-go-gin/app/controllers/admin"
-	"fmt"
+	//"fmt"
 )
 
 func CheckAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		user := session.Get("admin_user")
-		fmt.Printf("sesion content: %#v\n", user)
+		//fmt.Printf("sesion content: %#v\n", user)
 		if user == nil {
 			c.Abort()
 			c.Redirect(http.StatusFound, "/admin/login")

@@ -5,6 +5,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
+	"time"
 )
 
 func AesEncrypt(orig string, key string) string {
@@ -61,4 +62,10 @@ func PKCS7UnPadding(origData []byte) []byte {
 	length := len(origData)
 	unpadding := int(origData[length-1])
 	return origData[:(length - unpadding)]
+}
+
+func GetDateTime() (str string) {
+	t := time.Now()
+	str = t.Format("2006-01-02 15:04:05")
+	return
 }
