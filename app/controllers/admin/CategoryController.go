@@ -60,7 +60,16 @@ func CateCreate(c *gin.Context) {
 }
 
 func CateEdit(c *gin.Context) {
-	c.HTML(http.StatusOK, "admin/cate_edit.html", gin.H{})
+	id := c.Param("id")
+	sqlStr := "SELECT * FROM categories WHERE id=?"
+	db := helper.GetDb()
+	var category Category
+	err := db.Get(&category, sqlStr, id)
+	if err != nil {
+		fmt.Printf("query err:%#v\n", err)
+		return
+	}
+	c.HTML(http.StatusOK, "admin/cate_edit.html", gin.H{"category": category})
 }
 
 func CateDel(c *gin.Context) {
