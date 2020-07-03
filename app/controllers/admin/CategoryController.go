@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"fmt"
 	"blog-go-gin/app/helper"
+	"strconv"
 )
 
 type Category struct {
@@ -56,7 +57,7 @@ func CateCreate(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "添加栏目失败，请稍后重试！"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"error": 0, "msg": ""})
+	c.JSON(http.StatusOK, gin.H{"error": 0, "msg": "添加栏目成功！"})
 }
 
 func CateEdit(c *gin.Context) {
@@ -72,6 +73,45 @@ func CateEdit(c *gin.Context) {
 	c.HTML(http.StatusOK, "admin/cate_edit.html", gin.H{"category": category})
 }
 
+func CateUpdate(c *gin.Context)  {
+	id := c.Param("id")
+	pid := c.PostForm("pid")
+	name := c.PostForm("name")
+	keywords := c.PostForm("keywords")
+	description := c.PostForm("description")
+	sort := c.PostForm("sort")
+	status := c.PostForm("status")
+	createdAt := helper.GetDateTime()
+	updatedAt := createdAt
+	db := helper.GetDb()
+
+	sqlStr := "UPDATE categories SET pid=?,name=?,keywords=?,description=?,sort=?,status=?,updated_at=? WHERE id=?"
+
+
+	_, err := db.Exec(sqlStr, pid, name, keywords, description, sort, status, updatedAt, id)
+	if err != nil {
+		fmt.Printf("update data err:%#v\n", err)
+		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "修改栏目失败，请稍后重试！"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"error": 0, "msg": "修改栏目成功！"})
+}
+
 func CateDel(c *gin.Context) {
-	c.HTML(http.StatusOK, "admin/cate_add.html", gin.H{})
+	id := c.PostForm("id")
+	iId, _ := strconv.Atoi(id)
+	if iId > 0 {
+		sqlStr := "DELETE FROM categories WHERE id=?"
+		db := helper.GetDb()
+		_, err := db.Exec(sqlStr, iId)
+		if err != nil {
+			fmt.Printf("update data err:%#v\n", err)
+			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "修改栏目失败，请稍后重试！"})
+			return
+		} else {
+			c.JSON(http.StatusOK, gin.H{"error": 0, "msg": "删除栏目成功！"})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "参数错误！"})
 }

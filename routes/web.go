@@ -39,6 +39,7 @@ func WebRoutes(r *gin.Engine) {
 	adminRoute.GET("/category/add", admin.CateAdd)
 	adminRoute.POST("/category/add", admin.CateCreate)
 	adminRoute.GET("/category/edit/:id", admin.CateEdit)
+	adminRoute.POST("/category/edit/:id", admin.CateUpdate)
 	adminRoute.POST("/category/del", admin.CateDel)
 
 	// 文章管理

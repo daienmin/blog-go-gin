@@ -3,7 +3,7 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="/admin/index" title="回到首页" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
-        <a href="/admin/category/index">栏目管理</a>
+        <a href="/admin/category/index">栏目列表</a>
         <a href="#" class="current">修改栏目</a>
     </div>
     <div class="container-fluid">
@@ -74,7 +74,7 @@
                             </div>
 
                             <div class="form-actions">
-                                <input type="hidden" name="id" value="{{ .category.Id }}">
+                                <input type="hidden" id="id" name="id" value="{{ .category.Id }}">
                                 <button type="button" class="btn btn-success btn-sm" id="edittag">保存</button>
                                 <button type="button" class="btn btn-danger btn-sm">取消</button>
                             </div>
@@ -95,22 +95,18 @@
         $('.spinner').spinner();
         $('#edittag').click(function () {
             var id = $('#id').val();
+            var pid = $('#pid').val();
             var name = $('#name').val();
-            var remark = $('#remark').val();
-            var time = $('#time').val();
-            var root = $('#root').val();
+            var keywords = $('#keywords').val();
+            var description = $('#description').val();
             var sort = $('#sort').val();
-            var from = $('#from').val();
-            var ip = $('#ip').val();
-            var show = $('input[name="show"]:checked').val();
+            var status = $('input[name="status"]:checked').val();
             if (!name) {
                 err("栏目标题不能为空!");
                 return false;
             }
-            if (!remark) {
+            if (!description) {
                 err("栏目描述不能为空!");
-                return false;
-                err("栏目操作时间不能为空!");
                 return false;
             }
             if (!sort) {
@@ -120,22 +116,19 @@
             $("#edittag").attr("disabled", true);
             $.ajax({
                 type: "post",
-                url: "",
+                url: "/admin/category/edit/"+id,
                 async: true,
                 data: {
-                    "t_id": id,
-                    "t_name": name,
-                    "t_time": time,
-                    "t_sort": sort,
-                    "t_view": show,
-                    "t_remark": remark,
-                    "t_ip": ip,
-                    "t_from": from,
-                    "t_root": root
+                    "pid": pid,
+                    "name": name,
+                    "keywords": keywords,
+                    "description": description,
+                    "sort": sort,
+                    "status": status
                 },
                 success: function (data) {
                     if (data.error == 0) {
-                        succ("修改栏目完成!", data.msg, "");
+                        succ("success", data.msg, "/admin/category/index");
                     } else {
                         err(data.msg);
                         $("#edittag").removeAttr('disabled');
