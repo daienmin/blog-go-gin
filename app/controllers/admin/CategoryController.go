@@ -105,11 +105,11 @@ func CateDel(c *gin.Context) {
 		db := helper.GetDb()
 		_, err := db.Exec(sqlStr, iId)
 		if err != nil {
-			fmt.Printf("update data err:%#v\n", err)
-			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "修改栏目失败，请稍后重试！"})
+			fmt.Printf("del data err:%#v\n", err)
+			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "删除失败，请稍后重试！"})
 			return
 		} else {
-			c.JSON(http.StatusOK, gin.H{"error": 0, "msg": "删除栏目成功！"})
+			c.JSON(http.StatusOK, gin.H{"error": 0, "msg": "删除成功！"})
 			return
 		}
 	}

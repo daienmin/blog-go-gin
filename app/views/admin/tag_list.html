@@ -1,0 +1,83 @@
+{{ define "admin/tag_list.html"}}
+{{ template "admin/header.html" }}
+<div id="content">
+    <div id="breadcrumb">
+        <a href="/admin/index" title="回到首页" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+        <a href="#" class="current">标签列表</a>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">
+            <a href="/admin/tag/add" class="btn btn-success btn-sm" title="">新增标签</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="widget-box">
+                <div class="widget-title">
+					<span class="icon">
+						<i class="fa fa-tags"></i>
+					</span>
+                    <h5>标签列表</h5>
+                    <span class="label label-info">{{len .tags}} 条 </span>
+                </div>
+                <div class="widget-content">
+                    <table class="table table-bordered table-striped table-hover ">
+                        <thead>
+                        <tr>
+                            <th width="5%">ID</th>
+                            <th width="20%">标签名称</th>
+                            <th width="20%">描述</th>
+                            <th width="20%">添加时间</th>
+                            <th width="10%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{range $i,$v := .tags}}
+                        <tr>
+                            <td class="id">{{$v.Id}}</td>
+                            <td>{{$v.Name}}</td>
+                            <td>{{$v.Description}}</td>
+                            <td>{{$v.CreatedAt}}</td>
+                            <td>
+                                <a class="btn btn-success btn-sm" href="/admin/tag/edit/{{$v.Id}}">编辑</a>
+                                <button class="btn btn-danger btn-sm deltag" data-id="{{$v.Id}}">删除</button>
+                            </td>
+                        </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ template "admin/footer.html" }}
+<script>
+    $(document).ready(function () {
+        $(".deltag", this).click(function () {
+            if (confirm('确定要删除吗？')) {
+                var id = $(this).attr('data-id');
+                $(".deltag").attr("disabled", true);
+                $.ajax({
+                    type: "post",
+                    url: "/admin/tag/del",
+                    async: true,
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        if (data.error == 0) {
+                            succ("完成!", data.msg, "");
+                        } else {
+                            err("错误!", data.msg);
+                            $(".deltag").removeAttr('disabled');
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
+{{ end }}

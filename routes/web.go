@@ -42,11 +42,21 @@ func WebRoutes(r *gin.Engine) {
 	adminRoute.POST("/category/edit/:id", admin.CateUpdate)
 	adminRoute.POST("/category/del", admin.CateDel)
 
+	// 文章标签管理
+	adminRoute.GET("/tag/index", admin.TagIndex)
+	adminRoute.GET("/tag/add", admin.TagAdd)
+	adminRoute.POST("/tag/add", admin.TagCreate)
+	adminRoute.GET("/tag/edit/:id", admin.TagEdit)
+	adminRoute.POST("/tag/edit/:id", admin.TagUpdate)
+	adminRoute.POST("/tag/del", admin.TagDel)
+
 	// 文章管理
 	adminRoute.GET("/article/index", admin.ArticleIndex)
 	adminRoute.GET("/article/add", admin.ArticleAdd)
 	adminRoute.GET("/article/edit/:id", admin.ArticleEdit)
 	adminRoute.GET("/article/del/:id", admin.ArticleDel)
+
+
 
 	// 前台
 	r.GET("/", web.Index)
