@@ -48,7 +48,15 @@
 							</tr>
 						</tbody>
 					</table>
-					page
+                    <ul class="pagination">
+                        <li><a href="#">&laquo;</a></li>
+                        <li class="active"><span>1</span></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
 				</div>
 			</div>
 		</div>
@@ -63,7 +71,7 @@ $(document).ready(function(){
 			$(".delsay").attr("disabled",true);
 			$.ajax({
 				type:"post",
-				url:"{:U('/admin/article/del')}",
+				url:"/admin/article/del",
 				async:true,
 				data:{"id":id},
 				success:function(data){
