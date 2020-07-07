@@ -4,34 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"fmt"
-	"blog-go-gin/lib/db"
 	"strconv"
-	"blog-go-gin/lib/helper"
+	"blog-go-gin/app/model/category"
 )
 
-type Category struct {
-	Id          uint32 `db:"id" json:"id"`
-	Pid         int32  `db:"pid" json:"pid"`
-	Name        string `db:"name" json:"name"`
-	KeyWords    string `db:"keywords" json:"keywords"`
-	Description string `db:"description" json:"description"`
-	Sort        uint8  `db:"sort" json:"sort"`
-	Status      uint8  `db:"status" json:"status"`
-	CreatedAt   string `db:"created_at" json:"created_at"`
-	UpdatedAt   string `db:"updated_at" json:"updated_at"`
-}
-
 func CateIndex(c *gin.Context) {
-	sqlStr := "SELECT * FROM categories"
-	Db := db.GetDb()
-	var categories []Category
-	err := Db.Select(&categories, sqlStr)
-	if err != nil {
-		fmt.Printf("select err:%#v\n", err)
-		return
-	}
-	fmt.Printf("categories data: %#v\n", categories)
-
+	categories := category.GetList()
 	c.HTML(http.StatusOK, "admin/cate_list.html", gin.H{"categories": categories})
 }
 
@@ -46,32 +24,27 @@ func CateCreate(c *gin.Context) {
 	description := c.PostForm("description")
 	sort := c.PostForm("sort")
 	status := c.PostForm("status")
-	createdAt := helper.GetDateTime()
-	updatedAt := createdAt
-	Db := db.GetDb()
 
-	sqlStr := "INSERT INTO categories(pid,name,keywords,description,sort,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)"
-
-	_, err := Db.Exec(sqlStr, pid, name, keywords, description, sort, status, createdAt, updatedAt)
+	err := category.InsertData(pid, name, keywords, description, sort, status)
 	if err != nil {
 		fmt.Printf("insert data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "添加栏目失败，请稍后重试！"})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"error": 0, "msg": "添加栏目成功！"})
 }
 
 func CateEdit(c *gin.Context) {
 	id := c.Param("id")
-	sqlStr := "SELECT * FROM categories WHERE id=?"
-	Db := db.GetDb()
-	var category Category
-	err := Db.Get(&category, sqlStr, id)
+	cId, err := strconv.Atoi(id)
 	if err != nil {
-		fmt.Printf("query err:%#v\n", err)
+		fmt.Printf("convert string id to int err:%#v\n", err)
 		return
 	}
-	c.HTML(http.StatusOK, "admin/cate_edit.html", gin.H{"category": category})
+	cate := category.GetOne(cId)
+
+	c.HTML(http.StatusOK, "admin/cate_edit.html", gin.H{"category": cate})
 }
 
 func CateUpdate(c *gin.Context) {
@@ -82,13 +55,9 @@ func CateUpdate(c *gin.Context) {
 	description := c.PostForm("description")
 	sort := c.PostForm("sort")
 	status := c.PostForm("status")
-	createdAt := helper.GetDateTime()
-	updatedAt := createdAt
-	Db := db.GetDb()
 
-	sqlStr := "UPDATE categories SET pid=?,name=?,keywords=?,description=?,sort=?,status=?,updated_at=? WHERE id=?"
+	err := category.UpdateData(pid, name, keywords, description, sort, status, id)
 
-	_, err := Db.Exec(sqlStr, pid, name, keywords, description, sort, status, updatedAt, id)
 	if err != nil {
 		fmt.Printf("update data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "修改栏目失败，请稍后重试！"})
@@ -101,9 +70,7 @@ func CateDel(c *gin.Context) {
 	id := c.PostForm("id")
 	iId, _ := strconv.Atoi(id)
 	if iId > 0 {
-		sqlStr := "DELETE FROM categories WHERE id=?"
-		Db := db.GetDb()
-		_, err := Db.Exec(sqlStr, iId)
+		err := category.DeleteData(iId)
 		if err != nil {
 			fmt.Printf("del data err:%#v\n", err)
 			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "删除失败，请稍后重试！"})

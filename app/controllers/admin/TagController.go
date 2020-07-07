@@ -4,31 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"fmt"
-	"blog-go-gin/lib/helper"
-	"blog-go-gin/lib/db"
 	"strconv"
+	"blog-go-gin/app/model/tag"
 )
 
-type Tag struct {
-	Id          uint32 `db:"id" json:"id"`
-	Name        string `db:"name" json:"name"`
-	KeyWords    string `db:"keywords" json:"keywords"`
-	Description string `db:"description" json:"description"`
-	CreatedAt   string `db:"created_at" json:"created_at"`
-	UpdatedAt   string `db:"updated_at" json:"updated_at"`
-}
-
 func TagIndex(c *gin.Context) {
-	sqlStr := "SELECT * FROM tags"
-	Db := db.GetDb()
-	var tags []Tag
-	err := Db.Select(&tags, sqlStr)
-	if err != nil {
-		fmt.Printf("select err:%#v\n", err)
-		return
-	}
+	tags := tag.GetList()
 	fmt.Printf("tags data: %#v\n", tags)
-
 	c.HTML(http.StatusOK, "admin/tag_list.html", gin.H{"tags": tags})
 }
 
@@ -40,13 +22,7 @@ func TagCreate(c *gin.Context) {
 	name := c.PostForm("name")
 	keywords := c.PostForm("keywords")
 	description := c.PostForm("description")
-	createdAt := helper.GetDateTime()
-	updatedAt := createdAt
-	Db := db.GetDb()
-
-	sqlStr := "INSERT INTO tags(name,keywords,description,created_at,updated_at) VALUES(?,?,?,?,?)"
-
-	_, err := Db.Exec(sqlStr, name, keywords, description, createdAt, updatedAt)
+	err := tag.InsertData(name, keywords, description)
 	if err != nil {
 		fmt.Printf("insert data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "添加标签失败，请稍后重试！"})
@@ -57,15 +33,9 @@ func TagCreate(c *gin.Context) {
 
 func TagEdit(c *gin.Context) {
 	id := c.Param("id")
-	sqlStr := "SELECT * FROM tags WHERE id=?"
-	Db := db.GetDb()
-	var tag Tag
-	err := Db.Get(&tag, sqlStr, id)
-	if err != nil {
-		fmt.Printf("query err:%#v\n", err)
-		return
-	}
-	c.HTML(http.StatusOK, "admin/tag_edit.html", gin.H{"tag": tag})
+	cId,_ := strconv.Atoi(id)
+	tagData := tag.GetOne(cId)
+	c.HTML(http.StatusOK, "admin/tag_edit.html", gin.H{"tag": tagData})
 }
 
 func TagUpdate(c *gin.Context) {
@@ -73,13 +43,7 @@ func TagUpdate(c *gin.Context) {
 	name := c.PostForm("name")
 	keywords := c.PostForm("keywords")
 	description := c.PostForm("description")
-	createdAt := helper.GetDateTime()
-	updatedAt := createdAt
-	Db := db.GetDb()
-
-	sqlStr := "UPDATE tags SET name=?,keywords=?,description=?,updated_at=? WHERE id=?"
-
-	_, err := Db.Exec(sqlStr, name, keywords, description, updatedAt, id)
+	err := tag.UpdateData(name, keywords, description, id)
 	if err != nil {
 		fmt.Printf("update data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "修改标签失败，请稍后重试！"})
@@ -92,9 +56,7 @@ func TagDel(c *gin.Context) {
 	id := c.PostForm("id")
 	iId, _ := strconv.Atoi(id)
 	if iId > 0 {
-		sqlStr := "DELETE FROM tags WHERE id=?"
-		Db := db.GetDb()
-		_, err := Db.Exec(sqlStr, iId)
+		err := tag.DeleteData(iId)
 		if err != nil {
 			fmt.Printf("del data err:%#v\n", err)
 			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "删除失败，请稍后重试！"})
