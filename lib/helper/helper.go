@@ -69,3 +69,15 @@ func GetDateTime() (str string) {
 	str = t.Format("2006-01-02 15:04:05")
 	return
 }
+
+func GetDate() (str string) {
+	t := time.Now()
+	str = t.Format("20060102")
+	return
+}
+
+func GetDateTimeCom() (str string) {
+	t := time.Now()
+	str = t.Format("20060102150405")
+	return
+}

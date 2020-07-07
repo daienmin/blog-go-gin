@@ -18,8 +18,11 @@ type Category struct {
 	UpdatedAt   string `db:"updated_at" json:"updated_at"`
 }
 
-func GetList() []Category {
+func GetList(visiable bool) []Category {
 	sqlStr := "SELECT * FROM categories"
+	if visiable {
+		sqlStr += " WHERE status=1"
+	}
 	Db := db.GetDb()
 	var categories []Category
 	err := Db.Select(&categories, sqlStr)

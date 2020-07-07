@@ -28,8 +28,11 @@
 							<div class="form-group">
 								<label class="col-sm-3 col-md-3 col-lg-1 control-label">文章类别</label>
 								<div class="col-sm-9 col-md-9 col-lg-10">
-									<select id="tag">
-											<option value="" ></option>
+									<select id="cate" name="category_id">
+										<option value="0" >请选择</option>
+										{{range $i,$v := .cate}}
+                                        <option value="{{$v.Id}}">{{$v.Name}}</option>
+										{{end}}
 									</select>
 								</div>
 							</div>
@@ -51,7 +54,6 @@
 								<div class="col-sm-9 col-md-9 col-lg-10">
 					                <div class="imageBox-article">
 					                    <div class="thumbBox-article"></div>
-					                    <div class="spinner" style="display: none">Loading...</div>
 					                </div>
 					                	<input id="img" value="" type="hidden" />
 									<input type="file" id="file"/>
@@ -68,7 +70,9 @@
 							<div class="form-group">
 								<label class="col-sm-3 col-md-3 col-lg-1 control-label">文章内容</label>
 								<div class="col-sm-9 col-md-9 col-lg-10">
-									<script id="container" name="content" type="text/plain"></script>
+                                    <div id="content-editor">
+                                        <textarea style="display:none;"></textarea>
+                                    </div>
 								</div>
 							</div>
 							
@@ -131,6 +135,133 @@
 </div>
 {{ template "admin/footer.html" }}
 
+<link rel="stylesheet" href="/public/editor.md/css/editormd.css" />
+<script src="/public/editor.md/editormd.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("content-editor", {
+            // width  : "100%",
+            name: 'content',
+            height: "500px",
+            path: "/public/editor.md/lib/",
+            imageUpload: true,          // Enable/disable upload
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/admin/upload/article",             // Upload url
+
+//               appendMarkdown : md,
+//               saveHTMLToTextarea : true
+        });
+        //testEditor.getMarkdown();       // 获取 Markdown 源码
+        //testEditor.getHTML();           // 获取 Textarea 保存的 HTML 源码
+        //testEditor.getPreviewedHTML();  // 获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+    });
+</script>
+<script type="text/javascript">
+    /*var testEditor;
+
+    $(function() {
+
+        $.get('test.md', function(md){
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: 740,
+                path : '../lib/',
+                theme : "dark",
+                previewTheme : "dark",
+                editorTheme : "pastel-on-dark",
+                markdown : md,
+                codeFold : true,
+                //syncScrolling : false,
+                saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
+                searchReplace : true,
+                //watch : false,                // 关闭实时预览
+                htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
+                //toolbar  : false,             //关闭工具栏
+                //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+                emoji : true,
+                taskList : true,
+                tocm            : true,         // Using [TOCM]
+                tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+                flowChart : true,             // 开启流程图支持，默认关闭
+                sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+                //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
+                //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
+                //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
+                //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
+                //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
+                imageUpload : true,
+                imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL : "./php/upload.php",
+                onload : function() {
+                    console.log('onload', this);
+                    //this.fullscreen();
+                    //this.unwatch();
+                    //this.watch().fullscreen();
+
+                    //this.setMarkdown("#PHP");
+                    //this.width("100%");
+                    //this.height(480);
+                    //this.resize("100%", 640);
+                }
+            });
+        });
+
+        $("#goto-line-btn").bind("click", function(){
+            testEditor.gotoLine(90);
+        });
+
+        $("#show-btn").bind('click', function(){
+            testEditor.show();
+        });
+
+        $("#hide-btn").bind('click', function(){
+            testEditor.hide();
+        });
+
+        $("#get-md-btn").bind('click', function(){
+            alert(testEditor.getMarkdown());
+        });
+
+        $("#get-html-btn").bind('click', function() {
+            alert(testEditor.getHTML());
+        });
+
+        $("#watch-btn").bind('click', function() {
+            testEditor.watch();
+        });
+
+        $("#unwatch-btn").bind('click', function() {
+            testEditor.unwatch();
+        });
+
+        $("#preview-btn").bind('click', function() {
+            testEditor.previewing();
+        });
+
+        $("#fullscreen-btn").bind('click', function() {
+            testEditor.fullscreen();
+        });
+
+        $("#show-toolbar-btn").bind('click', function() {
+            testEditor.showToolbar();
+        });
+
+        $("#close-toolbar-btn").bind('click', function() {
+            testEditor.hideToolbar();
+        });
+
+        $("#toc-menu-btn").click(function(){
+            testEditor.config({
+                tocDropdown   : true,
+                tocTitle      : "目录 Table of Contents",
+            });
+        });
+
+        $("#toc-default-btn").click(function() {
+            testEditor.config("tocDropdown", false);
+        });
+    });*/
+</script>
 <script>
 	$(document).ready(function(){	
 		$('input[type=checkbox],input[type=radio]').iCheck({
@@ -138,10 +269,10 @@
 	    	radioClass: 'iradio_flat-blue'
 		});
 		$('select').select2();
-	    $('.spinner').spinner();
+
 	    var head = $('#img').val();
 	    if(!head){
-	    	head = '/Public/Other/Img/default.png';
+	    	head = '/public/images/admin/default.png';
 	    }
 	    var options = {
         thumbBox: '.thumbBox-article',
@@ -157,6 +288,7 @@
         }
         reader.readAsDataURL(this.files[0]);
         this.files = [];
+
     	});
 	    $('#addA').click(function(){
 	    	var title = $('#title').val();
@@ -204,12 +336,12 @@
 	    	$("#addA").attr("disabled",true);
 	    	$.ajax({
 	    		type:"post",
-	    		url:"{:U('Admin/Article/articleAdd')}",
+	    		url:"/admin/article/add",
 	    		async:true,
 	    		data:{"a_title":title,"a_remark":remark,"a_img":img,"a_keyword":keyword,"pid":tag,"a_time":time,"a_content":content,"a_view":show,"a_hit":hit,"a_original":org,"a_author":root},
 				success:function(data){
 					if(data.error==0){
-						succ("添加文章完成!",data.msg,"{:U('Admin/Article/articleList')}");
+						succ("添加文章完成!",data.msg,"/admin/article/index");
 					}else{
 						err(data.msg);
 						$("#addA").removeAttr('disabled');

@@ -34,6 +34,9 @@ func WebRoutes(r *gin.Engine) {
 	// 退出
 	adminRoute.GET("/logout", admin.Logout)
 
+	// 后台上传
+	adminRoute.POST("/upload/article", admin.ArticleUploadImg)
+
 	// 栏目管理
 	adminRoute.GET("/category/index", admin.CateIndex)
 	adminRoute.GET("/category/add", admin.CateAdd)

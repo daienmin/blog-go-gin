@@ -9,7 +9,7 @@ import (
 )
 
 func CateIndex(c *gin.Context) {
-	categories := category.GetList()
+	categories := category.GetList(false)
 	c.HTML(http.StatusOK, "admin/cate_list.html", gin.H{"categories": categories})
 }
 

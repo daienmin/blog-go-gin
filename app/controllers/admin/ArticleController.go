@@ -8,6 +8,7 @@ import (
 	"blog-go-gin/lib/paginator"
 	"html/template"
 	"blog-go-gin/app/model/article"
+	"blog-go-gin/app/model/category"
 )
 
 func ArticleIndex(c *gin.Context) {
@@ -43,7 +44,10 @@ func ArticleIndex(c *gin.Context) {
 }
 
 func ArticleAdd(c *gin.Context) {
-	c.HTML(http.StatusOK, "admin/article_add.html", gin.H{})
+	cate := category.GetList(true)
+	c.HTML(http.StatusOK, "admin/article_add.html", gin.H{
+		"cate": cate,
+	})
 }
 
 func ArticleEdit(c *gin.Context) {

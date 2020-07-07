@@ -37,7 +37,7 @@ func GetList(offset, pageSize int) []Article {
 
 func GetCount() (totalRows int) {
 	Db := db.GetDb()
-	countSql := "SELECT COUNT(*) as num FROM articles"
+	countSql := "SELECT COUNT(*) as num FROM articles ORDER BY id desc"
 	totalRows = 0
 	err := Db.Get(&totalRows, countSql)
 	if err != nil {
