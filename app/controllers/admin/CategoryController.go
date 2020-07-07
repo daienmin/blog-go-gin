@@ -4,8 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"fmt"
-	"blog-go-gin/app/helper"
+	"blog-go-gin/lib/db"
 	"strconv"
+	"blog-go-gin/lib/helper"
 )
 
 type Category struct {
@@ -16,15 +17,15 @@ type Category struct {
 	Description string `db:"description" json:"description"`
 	Sort        uint8  `db:"sort" json:"sort"`
 	Status      uint8  `db:"status" json:"status"`
-	CreatedAt   string  `db:"created_at" json:"created_at"`
-	UpdatedAt   string  `db:"updated_at" json:"updated_at"`
+	CreatedAt   string `db:"created_at" json:"created_at"`
+	UpdatedAt   string `db:"updated_at" json:"updated_at"`
 }
 
 func CateIndex(c *gin.Context) {
 	sqlStr := "SELECT * FROM categories"
-	db := helper.GetDb()
+	Db := db.GetDb()
 	var categories []Category
-	err := db.Select(&categories, sqlStr)
+	err := Db.Select(&categories, sqlStr)
 	if err != nil {
 		fmt.Printf("select err:%#v\n", err)
 		return
@@ -47,11 +48,11 @@ func CateCreate(c *gin.Context) {
 	status := c.PostForm("status")
 	createdAt := helper.GetDateTime()
 	updatedAt := createdAt
-	db := helper.GetDb()
+	Db := db.GetDb()
 
 	sqlStr := "INSERT INTO categories(pid,name,keywords,description,sort,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)"
 
-	_, err := db.Exec(sqlStr, pid, name, keywords, description, sort, status, createdAt, updatedAt)
+	_, err := Db.Exec(sqlStr, pid, name, keywords, description, sort, status, createdAt, updatedAt)
 	if err != nil {
 		fmt.Printf("insert data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "添加栏目失败，请稍后重试！"})
@@ -63,9 +64,9 @@ func CateCreate(c *gin.Context) {
 func CateEdit(c *gin.Context) {
 	id := c.Param("id")
 	sqlStr := "SELECT * FROM categories WHERE id=?"
-	db := helper.GetDb()
+	Db := db.GetDb()
 	var category Category
-	err := db.Get(&category, sqlStr, id)
+	err := Db.Get(&category, sqlStr, id)
 	if err != nil {
 		fmt.Printf("query err:%#v\n", err)
 		return
@@ -73,7 +74,7 @@ func CateEdit(c *gin.Context) {
 	c.HTML(http.StatusOK, "admin/cate_edit.html", gin.H{"category": category})
 }
 
-func CateUpdate(c *gin.Context)  {
+func CateUpdate(c *gin.Context) {
 	id := c.Param("id")
 	pid := c.PostForm("pid")
 	name := c.PostForm("name")
@@ -83,12 +84,11 @@ func CateUpdate(c *gin.Context)  {
 	status := c.PostForm("status")
 	createdAt := helper.GetDateTime()
 	updatedAt := createdAt
-	db := helper.GetDb()
+	Db := db.GetDb()
 
 	sqlStr := "UPDATE categories SET pid=?,name=?,keywords=?,description=?,sort=?,status=?,updated_at=? WHERE id=?"
 
-
-	_, err := db.Exec(sqlStr, pid, name, keywords, description, sort, status, updatedAt, id)
+	_, err := Db.Exec(sqlStr, pid, name, keywords, description, sort, status, updatedAt, id)
 	if err != nil {
 		fmt.Printf("update data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "修改栏目失败，请稍后重试！"})
@@ -102,8 +102,8 @@ func CateDel(c *gin.Context) {
 	iId, _ := strconv.Atoi(id)
 	if iId > 0 {
 		sqlStr := "DELETE FROM categories WHERE id=?"
-		db := helper.GetDb()
-		_, err := db.Exec(sqlStr, iId)
+		Db := db.GetDb()
+		_, err := Db.Exec(sqlStr, iId)
 		if err != nil {
 			fmt.Printf("del data err:%#v\n", err)
 			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "删除失败，请稍后重试！"})

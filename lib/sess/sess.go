@@ -1,4 +1,4 @@
-package helper
+package sess
 
 import (
 	"github.com/gin-contrib/sessions"
@@ -12,8 +12,9 @@ func Session(keyPairs string) gin.HandlerFunc {
 	return sessions.Sessions(keyPairs, store)
 }
 func SessionConfig() sessions.Store {
-	sessionMaxAge := 3600
-	sessionSecret := config.GetCfg().AppKey
+	cfg := config.GetCfg()
+	sessionMaxAge := cfg.SessMaxAge
+	sessionSecret := cfg.AppKey
 	var store sessions.Store
 	store = cookie.NewStore([]byte(sessionSecret))
 	store.Options(sessions.Options{

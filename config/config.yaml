@@ -3,6 +3,8 @@ app_key: wregwrsdfsgpoipngprnsvrs
 app_debug: true
 app_url: http://localhost
 
+sess_max_age: 86400
+
 # 数据库配置
 db_connection: mysql
 db_host: localhost

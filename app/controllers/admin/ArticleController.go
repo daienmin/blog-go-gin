@@ -3,8 +3,11 @@ package admin
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"blog-go-gin/app/helper"
+	"blog-go-gin/lib/db"
 	"fmt"
+	"strconv"
+	"blog-go-gin/lib/paginator"
+	"html/template"
 )
 
 type Article struct {
@@ -26,17 +29,49 @@ type Article struct {
 }
 
 func ArticleIndex(c *gin.Context) {
-	db := helper.GetDb()
+	p := c.Param("page")
+	page, err := strconv.Atoi(p)
+	if err != nil {
+		page = 1
+	}
+	pageSize := 20
+	offset := 0
+	if page-1 > 0 {
+		offset = pageSize * (page - 1)
+	}
+
+	Db := db.GetDb()
+
 	countSql := "SELECT COUNT(*) as num FROM articles"
-	num := 0
-	err := db.Get(&num, countSql)
+	totalRows := 0
+	err = Db.Get(&totalRows, countSql)
 	if err != nil {
 		fmt.Printf("count article err:%#v\n", err)
 		return
 	}
-	fmt.Printf("%#v\n", num)
 
-	c.HTML(http.StatusOK, "admin/article_list.html", gin.H{})
+	selectSql := fmt.Sprintf("SELECT * FROM articles LIMIT %d,%d", offset, pageSize)
+	var arts []Article
+	err = Db.Select(&arts, selectSql)
+	if err != nil {
+		fmt.Printf("select articles err:%#v\n", err)
+		return
+	}
+
+	pageHtml := ""
+	if totalRows > pageSize {
+		pg := paginator.InitPages()
+		pg.SetBaseUrl("/admin/article/index")
+		pg.SetTotalRows(int32(totalRows))
+		pg.SetCurrentPage(int32(page))
+		pageHtml = pg.Create()
+	}
+
+	c.HTML(http.StatusOK, "admin/article_list.html", gin.H{
+		"arts": arts,
+		"pageHtml": template.HTML(pageHtml),
+		"totalRows": totalRows,
+	})
 }
 
 func ArticleAdd(c *gin.Context) {
@@ -44,9 +79,34 @@ func ArticleAdd(c *gin.Context) {
 }
 
 func ArticleEdit(c *gin.Context) {
+	id := c.Param("id")
+	sqlStr := "SELECT * FROM articles WHERE id=?"
+	Db := db.GetDb()
+	var art Article
+	err := Db.Get(&art, sqlStr, id)
+	if err != nil {
+		fmt.Printf("query err:%#v\n", err)
+		return
+	}
+
 	c.HTML(http.StatusOK, "admin/article_edit.html", gin.H{})
 }
 
 func ArticleDel(c *gin.Context) {
-
+	id := c.PostForm("id")
+	iId, _ := strconv.Atoi(id)
+	if iId > 0 {
+		sqlStr := "DELETE FROM articles WHERE id=?"
+		Db := db.GetDb()
+		_, err := Db.Exec(sqlStr, iId)
+		if err != nil {
+			fmt.Printf("del data err:%#v\n", err)
+			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "删除失败，请稍后重试！"})
+			return
+		} else {
+			c.JSON(http.StatusOK, gin.H{"error": 0, "msg": "删除成功！"})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "参数错误！"})
 }

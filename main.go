@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"blog-go-gin/config"
-	"blog-go-gin/app/helper"
+	"blog-go-gin/lib/db"
+	"blog-go-gin/lib/sess"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 	}
 
 	// 初始化数据库连接
-	err = helper.InitDb()
+	err = db.InitDb()
 	if err != nil {
 		fmt.Printf("err to init db: %#v\n", err)
 		return
@@ -28,7 +29,7 @@ func main() {
 	r := gin.Default()
 
 	// 初始化session
-	r.Use(helper.Session(config.GetCfg().AppKey))
+	r.Use(sess.Session(config.GetCfg().AppKey))
 
 	// 加载路由
 	routes.WebRoutes(r)

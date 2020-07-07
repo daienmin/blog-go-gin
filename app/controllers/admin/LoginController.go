@@ -5,7 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"fmt"
 	"blog-go-gin/app/controllers"
-	"blog-go-gin/app/helper"
+	"blog-go-gin/lib/db"
+	"blog-go-gin/lib/helper"
 	"blog-go-gin/config"
 	"github.com/gin-contrib/sessions"
 	"encoding/json"
@@ -44,10 +45,10 @@ func DoLogin(c *gin.Context) {
 	}
 
 	// 获取用户信息
-	db := helper.GetDb()
+	Db := db.GetDb()
 	var user User
 	sqlStr := "select id,username,password from admin_users where username=?"
-	err := db.Get(&user, sqlStr, form.UserName)
+	err := Db.Get(&user, sqlStr, form.UserName)
 	if err != nil {
 		fmt.Printf("get user info err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"code": 1, "msg": "用户或密码错误！"})

@@ -4,7 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"fmt"
-	"blog-go-gin/app/helper"
+	"blog-go-gin/lib/helper"
+	"blog-go-gin/lib/db"
 	"strconv"
 )
 
@@ -19,9 +20,9 @@ type Tag struct {
 
 func TagIndex(c *gin.Context) {
 	sqlStr := "SELECT * FROM tags"
-	db := helper.GetDb()
+	Db := db.GetDb()
 	var tags []Tag
-	err := db.Select(&tags, sqlStr)
+	err := Db.Select(&tags, sqlStr)
 	if err != nil {
 		fmt.Printf("select err:%#v\n", err)
 		return
@@ -41,11 +42,11 @@ func TagCreate(c *gin.Context) {
 	description := c.PostForm("description")
 	createdAt := helper.GetDateTime()
 	updatedAt := createdAt
-	db := helper.GetDb()
+	Db := db.GetDb()
 
 	sqlStr := "INSERT INTO tags(name,keywords,description,created_at,updated_at) VALUES(?,?,?,?,?)"
 
-	_, err := db.Exec(sqlStr, name, keywords, description, createdAt, updatedAt)
+	_, err := Db.Exec(sqlStr, name, keywords, description, createdAt, updatedAt)
 	if err != nil {
 		fmt.Printf("insert data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "添加标签失败，请稍后重试！"})
@@ -57,9 +58,9 @@ func TagCreate(c *gin.Context) {
 func TagEdit(c *gin.Context) {
 	id := c.Param("id")
 	sqlStr := "SELECT * FROM tags WHERE id=?"
-	db := helper.GetDb()
+	Db := db.GetDb()
 	var tag Tag
-	err := db.Get(&tag, sqlStr, id)
+	err := Db.Get(&tag, sqlStr, id)
 	if err != nil {
 		fmt.Printf("query err:%#v\n", err)
 		return
@@ -74,11 +75,11 @@ func TagUpdate(c *gin.Context) {
 	description := c.PostForm("description")
 	createdAt := helper.GetDateTime()
 	updatedAt := createdAt
-	db := helper.GetDb()
+	Db := db.GetDb()
 
 	sqlStr := "UPDATE tags SET name=?,keywords=?,description=?,updated_at=? WHERE id=?"
 
-	_, err := db.Exec(sqlStr, name, keywords, description, updatedAt, id)
+	_, err := Db.Exec(sqlStr, name, keywords, description, updatedAt, id)
 	if err != nil {
 		fmt.Printf("update data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "修改标签失败，请稍后重试！"})
@@ -92,8 +93,8 @@ func TagDel(c *gin.Context) {
 	iId, _ := strconv.Atoi(id)
 	if iId > 0 {
 		sqlStr := "DELETE FROM tags WHERE id=?"
-		db := helper.GetDb()
-		_, err := db.Exec(sqlStr, iId)
+		Db := db.GetDb()
+		_, err := Db.Exec(sqlStr, iId)
 		if err != nil {
 			fmt.Printf("del data err:%#v\n", err)
 			c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "删除失败，请稍后重试！"})

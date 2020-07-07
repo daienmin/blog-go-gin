@@ -20,6 +20,7 @@ type Cfg struct {
 	RedisPassword string `yaml:"redis_password"`
 	RedisPort     uint16 `yaml:"redis_port"`
 	Port          string `yaml:"server_port"`
+	SessMaxAge    int    `yaml:"sess_max_age"`
 }
 
 var cfg *Cfg

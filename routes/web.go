@@ -52,6 +52,7 @@ func WebRoutes(r *gin.Engine) {
 
 	// 文章管理
 	adminRoute.GET("/article/index", admin.ArticleIndex)
+	adminRoute.GET("/article/index/:page", admin.ArticleIndex)
 	adminRoute.GET("/article/add", admin.ArticleAdd)
 	adminRoute.GET("/article/edit/:id", admin.ArticleEdit)
 	adminRoute.GET("/article/del/:id", admin.ArticleDel)
