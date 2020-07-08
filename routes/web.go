@@ -6,9 +6,25 @@ import (
 	"blog-go-gin/app/controllers/web"
 	"blog-go-gin/app/controllers"
 	"blog-go-gin/app/middleware"
+	//"html/template"
+	//"blog-go-gin/app/model/article"
 )
 
+/*func CanSelected(id uint32, aTags []article.ArtTags) string {
+	for _, v := range aTags {
+		if v.TagId == id {
+			return "selected"
+		}
+	}
+	return ""
+}*/
+
 func WebRoutes(r *gin.Engine) {
+
+	// 注册模板函数
+	/*r.SetFuncMap(template.FuncMap{
+		"canSelected": CanSelected,
+	})*/
 
 	// 配置模板目录
 	r.LoadHTMLGlob("app/views/**/*")
@@ -57,7 +73,9 @@ func WebRoutes(r *gin.Engine) {
 	adminRoute.GET("/article/index", admin.ArticleIndex)
 	adminRoute.GET("/article/index/:page", admin.ArticleIndex)
 	adminRoute.GET("/article/add", admin.ArticleAdd)
+	adminRoute.POST("/article/add", admin.ArticleCreate)
 	adminRoute.GET("/article/edit/:id", admin.ArticleEdit)
+	adminRoute.POST("/article/edit/:id", admin.ArticleUpdate)
 	adminRoute.GET("/article/del/:id", admin.ArticleDel)
 
 

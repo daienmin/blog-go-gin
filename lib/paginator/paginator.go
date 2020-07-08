@@ -67,7 +67,7 @@ func (p *paginator) SetPrevLinkName(name string) {
 
 func (p *paginator) Create() string {
 	// 总页数
-	numPages := math.Ceil(float64(p.TotalRows / p.ListRows))
+	numPages := math.Ceil(float64(p.TotalRows) / float64(p.ListRows))
 
 	var start int32 = 1
 	if p.CurrentPage - p.NumLinks > 0 {

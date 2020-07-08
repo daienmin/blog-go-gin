@@ -10,7 +10,6 @@ import (
 
 func TagIndex(c *gin.Context) {
 	tags := tag.GetList()
-	fmt.Printf("tags data: %#v\n", tags)
 	c.HTML(http.StatusOK, "admin/tag_list.html", gin.H{"tags": tags})
 }
 

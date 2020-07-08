@@ -42,14 +42,14 @@ func InsertData(pid, name, keywords, description, sort, status string) error {
 	return err
 }
 
-func GetOne(id int) *Category {
+func GetOne(id int) Category {
 	sqlStr := "SELECT * FROM categories WHERE id=?"
 	Db := db.GetDb()
-	var category *Category
+	var category Category
 	err := Db.Get(&category, sqlStr, id)
 	if err != nil {
 		fmt.Printf("query err:%#v\n", err)
-		return &Category{}
+		return Category{}
 	}
 	return category
 }

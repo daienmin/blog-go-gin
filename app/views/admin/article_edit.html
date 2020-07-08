@@ -1,228 +1,254 @@
 {{ define "admin/article_edit.html"}}
 {{ template "admin/header.html" }}
 <div id="content">
-	<div id="breadcrumb">
-		<a href="/admin/index" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
-		<a href="/admin/article/index">文章管理</a>
-		<a href="#" class="current">修改文章</a>
-	</div>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="widget-box">
-					<div class="widget-title">
+    <div id="breadcrumb">
+        <a href="admin/index" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+        <a href="/admin/article/index">文章管理</a>
+        <a href="#" class="current">编辑文章</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="widget-box">
+                    <div class="widget-title">
 						<span class="icon">
-							<i class="fa fa-flask"></i>									
+							<i class="fa fa-flask"></i>
 						</span>
-						<h5>修改文章</h5>
-					</div>
-					<div class="widget-content nopadding">
-						<form method="get" class="form-horizontal">
-							<div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">文章标题</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<input type="text" class="form-control input-sm" id="title" value=""/>
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">文章类别</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<select id="tag">
-											<option value="" ></option>
-									</select>
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label for="" class="col-sm-3 col-md-3 col-lg-1 control-label">关键词</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-quote-left"></i></span>
-										<input type='text' class="form-control input-sm" placeholder="一个关键词" id="keyword" value=""/>
-										<span class="input-group-addon"><i class="fa fa-quote-right"></i></span>
-									</div>
-								</div>											
-							</div>
-							
-							                                                   
+                        <h5>编辑文章</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <form method="get" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">文章标题</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <input type="text" class="form-control input-sm" name="title" value="{{.art.Title}}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">文章类别</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <select id="cate" name="category_id">
+                                        <option value="0" selected>请选择</option>
+                                        {{$categoryId := .art.CategoryId}}
+										{{range $i,$v := .cate}}
+                                        <option value="{{$v.Id}}" {{if eq $categoryId $v.Id}}selected{{end}}>{{$v.Name}}</option>
+										{{end}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-md-3 col-lg-1 control-label">关键词</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-addon"><i class="fa fa-quote-left"></i></span>
+                                        <input type='text' class="form-control input-sm" placeholder="" name="keywords" value="{{.art.KeyWords}}"/>
+                                        <span class="input-group-addon"><i class="fa fa-quote-right"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="form-group">
                                 <label class="col-sm-3 col-md-3 col-lg-1 control-label">封面</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-					                <div class="imageBox-article">
-					                    <div class="thumbBox-article"></div>
-					                    <div class="spinner" style="display: none">Loading...</div>
-					                </div>
-					                	<input id="img" value="" type="hidden" />
-									<input type="file" id="file"/>
-								</div>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <img src="{{.art.Cover}}" style="max-width: 150px;" class="img-responsive img-show" alt="">
+                                    <input type="hidden" id="cover" name="cover" value="{{.art.Cover}}" />
+                                    <input type="file" name="upload_img" id="upload_img" value="" class="hide upload-img"/>
+                                    <a href="javascript:void(0);" class="btn btn-default add-pic-btn">上传</a>
+                                </div>
                             </div>
-							
-							<div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">描述</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<textarea rows="3" class="form-control" id="remark"></textarea>
-								</div>
-							</div>
 
-							<div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">文章内容</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<script id="container" name="content" type="text/plain"></script>
-								</div>
-							</div>
-							
-							<div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">发表时间</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    	<input type="text" class="form-control input-sm" id="time"/>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             <div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">显示</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<label><input type="radio" name="show" value="0" > Not show</label>
-									<label><input type="radio" name="show" value="1"/> Show</label>
-									<label><input type="radio" name="show" value="2"/> Hot</label>
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">原创</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<label><input type="radio" name="org" value="1"/> Yes</label>
-									<label><input type="radio" name="org" value="0"/> No</label>
-								</div>
-							</div>
-							
-							<div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">发表人</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    	<input type="text"   class="form-control input-sm" id="root"/>
-                                    </div>
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">描述</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <textarea rows="3" class="form-control" name="description">{{.art.Description}}</textarea>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">点击量</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-fire"></i></span>
-                                    	<input type="text" class="form-control input-sm" id="hit"/>
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">文章内容</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <div id="content-editor">
+                                        <textarea style="display:none;">{{.art.MarkDown}}</textarea>
                                     </div>
                                 </div>
                             </div>
-							<div class="form-actions">
-								<button type="button" class="btn btn-success btn-sm" id="editA">保存</button>&nbsp;&nbsp;
-								<button type="button" class="btn btn-danger btn-sm">取消</button>
-							</div>
-						</form>
-					</div>
-				</div>						
-			</div>
-		</div>
-	</div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">显示</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <label><input type="radio" name="status" {{if eq .art.Status 0}}checked{{end}} value="0" > 否</label>
+                                    <label><input type="radio" name="status" {{if eq .art.Status 1}}checked{{end}} value="1"/> 是</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">推荐</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <label><input type="radio" name="is_recommend" {{if eq .art.IsRecommend 0}}checked{{end}} value="0" > 否</label>
+                                    <label><input type="radio" name="is_recommend" {{if eq .art.IsRecommend 1}}checked{{end}} value="1"/> 是</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">置顶</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <label><input type="radio" name="is_top" {{if eq .art.IsTop 0}}checked{{end}} value="0"/> 否</label>
+                                    <label><input type="radio" name="is_top" {{if eq .art.IsTop 1}}checked{{end}} value="1"/> 是</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">标签</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+								{{range $i,$v := .tags}}
+                                    <label for="tag_{{$v.Id}}">{{$v.Name}}&nbsp;<input type="checkbox"  name="tag_ids[]" id="tag_{{$v.Id}}" value="{{$v.Id}}"></label>&nbsp;
+								{{end}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">作者</label>
+                                <div class=" col-sm-9 col-md-9 col-lg-10">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input type="text" class="form-control input-sm" name="author" value="{{.art.Author}}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <input type="hidden" name="id" value="{{.art.Id}}">
+                                <button type="button" class="btn btn-success btn-sm" id="addA">保存</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-danger btn-sm">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {{ template "admin/footer.html" }}
-<script>
-	$(document).ready(function(){	
-		$('input[type=checkbox],input[type=radio]').iCheck({
-	    	checkboxClass: 'icheckbox_flat-blue',
-	    	radioClass: 'iradio_flat-blue'
-		});
-		$('select').select2();
-	    $('.spinner').spinner();
-	    var head = $('#img').val();
-	    if(!head){
-	    	head = '/Public/Other/Img/default.png';
-	    }
-	    var options = {
-        thumbBox: '.thumbBox-article',
-        spinner: '.spinner',
-        imgSrc: head
-    	};
-    	var cropper = $('.imageBox-article').cropbox(options);
-    	$('#file').on('change', function() {
-        	var reader = new FileReader();
-        	reader.onload = function(e) {
-            options.imgSrc = e.target.result;
-            cropper = $('.imageBox-article').cropbox(options);
+<link rel="stylesheet" href="/public/editor.md/css/editormd.css" />
+<script src="/public/editor.md/editormd.min.js"></script>
+<script type="text/javascript">
+    var artTags = eval("{{.artTags}}");
+    for (var i in artTags) {
+        if (artTags.hasOwnProperty(i)) {
+            $("#tag_"+artTags[i].tag_id).prop('checked', true)
         }
-        reader.readAsDataURL(this.files[0]);
-        this.files = [];
-    	});
-	    
-	    $('#editA').click(function(){
-	    	var img = cropper.getDataURL();
-	    	var aid = $('#aid').val();
-	    	var title = $('#title').val();
-	    	var tag = $('#tag').val();
-	    	var keyword = $('#keyword').val();
-	    	var remark = $('#remark').val();
-	    	var content = UE.getEditor('container').getContent();
-	    	var time = $('#time').val();
-	    	var show = $('input[name="show"]:checked').val();
-	    	var org = $('input[name="org"]:checked').val();
-	    	var root = $('#root').val();
-	    	var hit = $('#hit').val();
-	    	if(!title){
-	    		err("文章标题不能为空!");
-	    		return false;
-	    	}else if(!tag){
-	    		err("文章类别不能为空!");
-	    		return false;
-	    	}else if(!keyword){
-	    		err("关键词不能为空!");
-	    		return false;
-	    	}else if(!remark){
-	    		err("文章描述不能为空!");
-	    		return false;
-	    	}else if(!content){
-	    		err("正文不能为空!");
-	    		return false;
-	    	}else if(!time){
-	    		err("发表时间不能为空!");
-	    		return false;
-	    	}else if(!show){
-	    		err("请选择是否显示!");
-	    		return false;
-	    	}else if(!org){
-	    		err("请选择是否原创!");
-	    		return false;
-	    	}else if(!root){
-	    		err("作者不能为空!");
-	    		return false;
-	    	}else if(!hit){
-	    		err("默认点击量不能为空!");
-	    		return false;
-	    	}
-	    	$("#editA").attr("disabled",true);
-	    	$.ajax({
-	    		type:"post",
-	    		url:"{:U('Admin/Article/articleEditH')}",
-	    		async:true,
-	    		data:{"a_img":img,"a_id":aid,"a_title":title,"a_remark":remark,"a_keyword":keyword,"pid":tag,"a_time":time,"a_content":content,"a_view":show,"a_hit":hit,"a_original":org,"a_author":root},
-				success:function(data){
-					if(data.error==0){
-						succ("修改文章完成!",data.msg,"{:U('Admin/Article/articleList')}");
-					}else{
-						err(data.msg);
-						$("#editA").removeAttr('disabled');
-					}
-				},
-				eerror:function(data){
-					err("网络错误!");
-					$("#editA").removeAttr('disabled');
-				}
-	    	});
-	    });
-	});
+    }
+    $(document).ready(function(){
+        var editor = editormd("content-editor", {
+            // width  : "100%",
+            name: 'content',
+            height: "500px",
+            path: "/public/editor.md/lib/",
+            imageUpload: true,          // Enable/disable upload
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/admin/upload/article",             // Upload url
+            // appendMarkdown : md,
+            saveHTMLToTextarea : true
+        });
+        // editor.getMarkdown();       // 获取 Markdown 源码
+        // editor.getHTML();           // 获取 Textarea 保存的 HTML 源码
+        // editor.getPreviewedHTML();  // 获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+
+        $('.add-pic-btn').click(function () {
+            $('input.upload-img').click();
+        });
+        // 图片上传
+        $('input.upload-img').change(function () {
+            var formData = new FormData();
+            formData.append('editormd-image-file', document.getElementById('upload_img').files[0]);
+            $.ajax({
+                type: 'POST',
+                url: "/admin/upload/article",
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    if (res.success === 1) {
+                        $('img.img-show').attr('src', res.url);
+                        $('#cover').val(res.url);
+                    } else {
+                        alert(res.message);
+                        $('#cover').val('');
+                        $('img.img-show').attr('src', '/public/images/admin/default.png');
+                    }
+                    $('input.upload-img').val('');
+                }
+            });
+        });
+
+        $('input[type=checkbox],input[type=radio]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+        $('select').select2();
+
+
+        $('#addA').click(function(){
+            var title = $('input[name="title"]').val();
+            var category_id = $('select[name="category_id"] option:selected').val();
+            var keywords = $('input[name="keywords"]').val();
+            var cover = $('input[name="cover"]').val();
+            var description = $('textarea[name="description"]').val();
+            var markdown = editor.getMarkdown();
+            var html = editor.getHTML();
+            var status = $('input[name="status"]:checked').val();
+            var is_recommend = $('input[name="is_recommend"]:checked').val();
+            var is_top = $('input[name="is_top"]:checked').val();
+            var author = $('input[name="author"]').val();
+            var id = $('input[name="id"]').val();
+
+            var tag_ids = [];
+            $('input[name="tag_ids[]"]').each(function (i,v) {
+                if ($(v).is(":checked")) {
+                    tag_ids.push($(v).val());
+                }
+            });
+
+            $("#addA").attr("disabled",true);
+            $.ajax({
+                type:"post",
+                url:"/admin/article/edit/"+id,
+                async:true,
+                data:{
+                    "title":title,
+                    "category_id":category_id,
+                    "keywords":keywords,
+                    "cover":cover,
+                    "description":description,
+                    "markdown":markdown,
+                    "html":html,
+                    "status":status,
+                    "is_recommend":is_recommend,
+                    "is_top":is_top,
+                    "tag_ids":tag_ids,
+                    "author":author
+                },
+                success:function(data){
+                    if(data.error===0){
+                        succ("修改文章完成!",data.msg,"/admin/article/index");
+                    }else{
+                        err(data.msg);
+                        $("#addA").removeAttr('disabled');
+                    }
+                },
+                eerror:function(data){
+                    err("网络错误!");
+                    $("#addA").removeAttr('disabled');
+                }
+            });
+        });
+
+    });
 </script>
 </body>
 </html>

@@ -36,14 +36,14 @@ func InsertData(name,keywords,description string) error {
 	return err
 }
 
-func GetOne(id int) *Tag {
+func GetOne(id int) Tag {
 	sqlStr := "SELECT * FROM tags WHERE id=?"
 	Db := db.GetDb()
-	var tagData *Tag
+	var tagData Tag
 	err := Db.Get(&tagData, sqlStr, id)
 	if err != nil {
 		fmt.Printf("query err:%#v\n", err)
-		return &Tag{}
+		return Tag{}
 	}
 	return tagData
 }
