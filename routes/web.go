@@ -78,6 +78,15 @@ func WebRoutes(r *gin.Engine) {
 	adminRoute.POST("/article/edit/:id", admin.ArticleUpdate)
 	adminRoute.GET("/article/del/:id", admin.ArticleDel)
 
+	// 友情链接管理
+	adminRoute.GET("/link/index", admin.LinkIndex)
+	//adminRoute.GET("/link/index/:page", admin.LinkIndex)
+	adminRoute.GET("/link/add", admin.LinkAdd)
+	adminRoute.POST("/link/add", admin.LinkCreate)
+	adminRoute.GET("/link/edit/:id", admin.LinkEdit)
+	adminRoute.POST("/link/edit/:id", admin.LinkUpdate)
+	adminRoute.GET("/link/del/:id", admin.LinkDel)
+
 
 
 	// 前台
