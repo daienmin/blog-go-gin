@@ -79,10 +79,8 @@ $(document).ready(function(){
 			var id = $(this).attr('data-id');
 			$(".delsay").attr("disabled",true);
 			$.ajax({
-				type:"post",
-				url:"/admin/article/del",
-				async:true,
-				data:{"id": id},
+				type:"get",
+				url:"/admin/article/del/" + id,
 				success:function(data){
 					if(data.error==0){
 						succ("完成!", data.msg, location.href);

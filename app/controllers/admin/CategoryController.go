@@ -67,7 +67,7 @@ func CateUpdate(c *gin.Context) {
 }
 
 func CateDel(c *gin.Context) {
-	id := c.PostForm("id")
+	id := c.Param("id")
 	iId, _ := strconv.Atoi(id)
 	if iId > 0 {
 		err := category.DeleteData(iId)

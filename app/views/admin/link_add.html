@@ -1,10 +1,10 @@
-{{ define "admin/link_list.html"}}
+{{ define "admin/link_add.html"}}
 {{ template "admin/header.html" }}
 <div id="content">
 	<div id="breadcrumb">
 		<a href="/admin/index" title="回到首页" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
-		<a href="#">互动管理</a>
-		<a href="#" class="current">新增友情链接</a>
+		<a href="/admin/link/index">友链管理</a>
+		<a href="#" class="current">新增友链</a>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
@@ -27,21 +27,7 @@
                                     </div>
                                 </div>
                             </div>
-							<div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">描述内容</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<textarea rows="5" class="form-control" id="remark"></textarea>
-								</div>
-							</div>
-                            <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">申请邮箱</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    	<input type="email" value="" class="form-control input-sm" id="email" />
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 col-md-3 col-lg-1 control-label">URL地址</label>
                                 <div class=" col-sm-9 col-md-9 col-lg-10">
@@ -51,69 +37,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">IP</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-5">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                                <div class=" col-sm-9 col-md-9 col-lg-5">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 col-md-3 col-lg-1 control-label">排序</label>
                                 <div class=" col-sm-9 col-md-9 col-lg-10">
                                 	<div class="input-group input-group-sm">
 										<span class="input-group-addon"><i class="fa fa-anchor"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" placeholder="100" id="sort" />
+                                    	<input type="text" value="" class="form-control input-sm" placeholder="" id="sort" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">显示位置</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<label><input type="radio" name="show" value="0"/> 不显示</label>
-									<label><input type="radio" name="show" value="2"/> 首页</label>
-									<label><input type="radio" name="show" value="1"/> 内页</label>
-								</div>
-							</div>
-                            <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">回复人</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" id="rname"  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">回复时间</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" id="rtime" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">回复内容</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<textarea rows="5" class="form-control" id="rcontent" id="rcontent"></textarea>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 col-md-3 col-lg-1 control-label">邮件</label>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<label><input type="radio" name="send" checked value="1"/> Yes</label>
-									<label><input type="radio" name="send" value="0" /> No</label>
-								</div>
-							</div>
+
 							<div class="form-actions">
 								<button type="button" class="btn btn-success btn-sm" id="addL">添加</button>
 								<button type="button" class="btn btn-danger btn-sm">取消</button>
@@ -128,44 +62,25 @@
 {{ template "admin/footer.html" }}
 <script>
 	$(document).ready(function(){
-	$('input[type=checkbox],input[type=radio]').iCheck({
-    	checkboxClass: 'icheckbox_flat-blue',
-    	radioClass: 'iradio_flat-blue'
-	});
-	$('select').select2();
-    $('.spinner').spinner();
+
     $('#addL').click(function(){
     	var name=$('#name').val();
-    	var email = $('#email').val();
-    	var remark=$('#remark').val();
     	var url=$('#url').val();
     	var sort=$('#sort').val();
-    	var show=$('input[name="show"]:checked').val();
-    	if(!name){
-			err("链接名不能为空!");
-			return false;
-		}else if(!remark){
-			err("链接描述不能为空!");
-			return false;
-		}else if(!show){
-			err("请选择是否显示!");
-			return false;
-		}else if(!url){
-			err("转向地址不能为空!");
-			return false;
-		}else if(!sort){
-			err("排序不能为空!");
-			return false;
-		}
+
 		$("#addL").attr("disabled",true);
 		$.ajax({
 			type:"post",
 			url:"",
 			async:true,
-			data:{"l_name":name,"l_email":email,"l_url":url,"l_content":remark,"l_sort":sort,"l_view":show},
+			data:{
+			    "name": name,
+				"url": url,
+				"sort": sort
+			},
 			success:function(data){
 				if(data.error==0){
-					succ("添加链接完成!",data.msg,"");
+					succ("添加链接完成!", data.msg, "/admin/link/index");
 				}else{
 					err(data.msg);
 					$("#addL").removeAttr('disabled');

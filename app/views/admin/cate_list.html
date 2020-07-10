@@ -68,12 +68,8 @@
                 var id = $(this).attr('data-id');
                 $(".deltag").attr("disabled", true);
                 $.ajax({
-                    type: "post",
-                    url: "/admin/category/del",
-                    async: true,
-                    data: {
-                        id: id
-                    },
+                    type: "get",
+                    url: "/admin/category/del/" + id,
                     success: function (data) {
                         if (data.error == 0) {
                             succ("完成!", data.msg, "");
