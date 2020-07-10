@@ -24,12 +24,12 @@
 			<div id="user-nav">
 	            <ul class="btn-group">
 	                <li class="btn" >
-	                	<a title="" href="#">
+	                	<a title="" href="javascript:void(0);">
 	                		<i class="fa fa-user"></i> 
 	                		<span class="text">admin</span>
 	                	</a>
 	                </li>
-	                <li class="btn"><a title="" href=""><i class="fa fa-cog"></i> <span class="text">系统设置</span></a></li>
+	                {{/*<li class="btn"><a title="" href=""><i class="fa fa-cog"></i> <span class="text">系统设置</span></a></li>*/}}
 	                <li class="btn"><a title="" href="/admin/logout"><i class="fa fa-share"></i> <span class="text">退出</span></a></li>
 	            </ul>
 	        </div>
@@ -108,8 +108,8 @@
                     <li class="submenu">
                         <a href="#"><i class="fa fa-user-md"></i> <span>后台用户管理</span><i class="arrow fa fa-chevron-right"></i></a>
                         <ul>
-                            <li><a href="">新增用户</a></li>
-                            <li><a href="">用户列表</a></li>
+                            <li><a href="/admin/admin_user/add">新增用户</a></li>
+                            <li><a href="/admin/admin_user/index">用户列表</a></li>
                         </ul>
                     </li>
 

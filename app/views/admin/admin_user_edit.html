@@ -1,10 +1,10 @@
-{{ define "admin/link_add.html"}}
+{{ define "admin/admin_user_edit.html"}}
 {{ template "admin/header.html" }}
 <div id="content">
 	<div id="breadcrumb">
 		<a href="/admin/index" title="回到首页" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
-		<a href="/admin/link/index">友链管理</a>
-		<a href="#" class="current">新增友链</a>
+		<a href="/admin/admin_user/index">后台用户管理</a>
+		<a href="#" class="current">修改用户</a>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
@@ -14,42 +14,33 @@
 						<span class="icon">
 							<i class="fa fa-comment"></i>									
 						</span>
-						<h5>新增友链</h5>
+						<h5>修改用户</h5>
 					</div>
 					<div class="widget-content nopadding">
 						<form  method="post" class="form-horizontal">							
 							<div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">链接名称</label>
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">用户名称</label>
                                 <div class=" col-sm-9 col-md-9 col-lg-10">
                                 	<div class="input-group input-group-sm">
 										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" placeholder="" id="name" />
+                                    	<input type="text" value="{{.data.UserName}}" class="form-control input-sm" id="username" />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">URL地址</label>
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">密码</label>
                                 <div class=" col-sm-9 col-md-9 col-lg-10">
                                 	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" id="url" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">排序</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-anchor"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" placeholder="" id="sort" />
+										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                    	<input type="text" value="{{.data.Password}}" class="form-control input-sm" id="password" />
                                     </div>
                                 </div>
                             </div>
 
 							<div class="form-actions">
-								<button type="button" class="btn btn-success btn-sm" id="addL">添加</button>
+                                <input type="hidden" name="id" id="id" value="{{.data.Id}}">
+								<button type="button" class="btn btn-success btn-sm" id="editL">修改</button>
 								<button type="button" class="btn btn-danger btn-sm">取消</button>
 							</div>
 						</form>
@@ -62,33 +53,32 @@
 {{ template "admin/footer.html" }}
 <script>
 	$(document).ready(function(){
-
-    $('#addL').click(function(){
-    	var name=$('#name').val();
-    	var url=$('#url').val();
-    	var sort=$('#sort').val();
-
-		$("#addL").attr("disabled",true);
+    
+    $('#editL').click(function(){
+    	var id=$('#id').val();
+    	var username=$('#username').val();
+    	var password=$('#password').val();
+		$("#editL").attr("disabled",true);
 		$.ajax({
 			type:"post",
 			url:"",
 			async:true,
 			data:{
-			    "name": name,
-				"url": url,
-				"sort": sort
+			    "id": id,
+				"username": username,
+				"password": password
 			},
 			success:function(data){
 				if(data.error==0){
-					succ("添加链接完成!", data.msg, "/admin/link/index");
+					succ("修改用户完成!",data.msg,"/admin/link/index");
 				}else{
 					err(data.msg);
-					$("#addL").removeAttr('disabled');
+					$("#editL").removeAttr('disabled');
 				}
 			},
 			eerror:function(data){
 				err("网络错误!");
-				$("#addsay").removeAttr('disabled');
+				$("#editL").removeAttr('disabled');
 			}
 		});
     });

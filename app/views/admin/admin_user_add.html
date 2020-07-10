@@ -1,10 +1,10 @@
-{{ define "admin/link_add.html"}}
+{{ define "admin/admin_user_add.html"}}
 {{ template "admin/header.html" }}
 <div id="content">
 	<div id="breadcrumb">
 		<a href="/admin/index" title="回到首页" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
-		<a href="/admin/link/index">友链管理</a>
-		<a href="#" class="current">新增友链</a>
+		<a href="/admin/admin_user/index">后台用户管理</a>
+		<a href="#" class="current">新增用户</a>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
@@ -14,36 +14,26 @@
 						<span class="icon">
 							<i class="fa fa-comment"></i>									
 						</span>
-						<h5>新增友链</h5>
+						<h5>新增用户</h5>
 					</div>
 					<div class="widget-content nopadding">
 						<form  method="post" class="form-horizontal">							
 							<div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">链接名称</label>
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">用户名称</label>
                                 <div class=" col-sm-9 col-md-9 col-lg-10">
                                 	<div class="input-group input-group-sm">
 										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" placeholder="" id="name" />
+                                    	<input type="text" value="" class="form-control input-sm" placeholder="" id="username" />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">URL地址</label>
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">密码</label>
                                 <div class=" col-sm-9 col-md-9 col-lg-10">
                                 	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" id="url" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">排序</label>
-                                <div class=" col-sm-9 col-md-9 col-lg-10">
-                                	<div class="input-group input-group-sm">
-										<span class="input-group-addon"><i class="fa fa-anchor"></i></span>
-                                    	<input type="text" value="" class="form-control input-sm" placeholder="" id="sort" />
+										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                    	<input type="text" value="" class="form-control input-sm" id="password" />
                                     </div>
                                 </div>
                             </div>
@@ -64,9 +54,8 @@
 	$(document).ready(function(){
 
     $('#addL').click(function(){
-    	var name=$('#name').val();
-    	var url=$('#url').val();
-    	var sort=$('#sort').val();
+    	var username=$('#username').val();
+    	var password=$('#password').val();
 
 		$("#addL").attr("disabled",true);
 		$.ajax({
@@ -74,13 +63,12 @@
 			url:"",
 			async:true,
 			data:{
-			    "name": name,
-				"url": url,
-				"sort": sort
+			    "username": username,
+				"password": password
 			},
 			success:function(data){
 				if(data.error==0){
-					succ("添加链接完成!", data.msg, "/admin/link/index");
+					succ("添加用户完成!", data.msg, "/admin/admin_user/index");
 				}else{
 					err(data.msg);
 					$("#addL").removeAttr('disabled');
