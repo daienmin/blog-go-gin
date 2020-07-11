@@ -20,4 +20,15 @@ function err(msg){
 		sticky: false,
 	});
 }
+
+$(function () {
+	var url = location.href;
+	$("#sidebar li.submenu").each(function (i,v) {
+		var control = $(v).attr("data-control");
+		if (url.indexOf(control) > -1) {
+			$(v).addClass('open').find('ul').show();
+			return false;
+		}
+    });
+});
 	

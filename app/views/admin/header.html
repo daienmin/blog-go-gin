@@ -39,7 +39,7 @@
 					<li><a href="/admin/index"><i class="fa fa-dashboard"></i> <span>首页</span></a></li>
 					<li><a href="/" target="_blank"><i class="fa fa-home"></i> <span>前端首页</span></a></li>
 
-                    <li class="submenu">
+                    <li class="submenu" data-control="category">
                         <a href="#"><i class="fa fa-tasks"></i> <span>栏目管理</span><i class="arrow fa fa-chevron-right"></i></a>
                         <ul>
                             <li><a href="/admin/category/add">新增栏目</a></li>
@@ -47,7 +47,7 @@
                         </ul>
                     </li>
 
-                    <li class="submenu">
+                    <li class="submenu" data-control="tag">
                         <a href="#"><i class="fa fa-tags"></i> <span>标签管理</span><i class="arrow fa fa-chevron-right"></i></a>
                         <ul>
                             <li><a href="/admin/tag/add">新增标签</a></li>
@@ -55,16 +55,23 @@
                         </ul>
                     </li>
 
-                    <li class="submenu">
+                    <li class="submenu"  data-control="article">
                         <a href="#"><i class="fa fa-th"></i> <span>文章管理</span> <i class="arrow fa fa-chevron-right"></i></a>
                         <ul>
                             <li><a href="/admin/article/add">发布文章</a></li>
                             <li><a href="/admin/article/index">文章列表</a></li>
-                            {{/*<li><a href="">文章列表</a></li>*/}}
                         </ul>
                     </li>
 
-                    <li class="submenu">
+                    <li class="submenu"  data-control="nav">
+                        <a href="#"><i class="fa fa-location-arrow"></i> <span>导航管理</span> <i class="arrow fa fa-chevron-right"></i></a>
+                        <ul>
+                            <li><a href="/admin/nav/add">添加导航</a></li>
+                            <li><a href="/admin/nav/index">导航列表</a></li>
+                        </ul>
+                    </li>
+
+                    {{/*<li class="submenu">
                         <a href="#"><i class="fa fa-comment"></i> <span>互动管理</span><i class="arrow fa fa-chevron-right"></i></a>
                         <ul>
                             <li><a href="">说说评论</a></li>
@@ -72,7 +79,7 @@
                             <li><a href="">留言评论</a></li>
                             <li><a href="">相册评论</a></li>
                         </ul>
-                    </li>
+                    </li>*/}}
 					{{/*<li class="submenu">
 						<a href="#"><i class="fa fa-user-md"></i> <span>用户管理</span><i class="arrow fa fa-chevron-right"></i></a>
 						<ul>
@@ -80,7 +87,7 @@
 							<li><a href="">用户列表</a></li>
 						</ul>
 					</li>*/}}
-					<li class="submenu">
+					<li class="submenu"  data-control="link">
 						<a href="#"><i class="fa fa-link"></i> <span>友链管理</span><i class="arrow fa fa-chevron-right"></i></a>
 						<ul>
 							<li><a href="/admin/link/add">新增友链</a></li>
@@ -89,23 +96,23 @@
 						</ul>
 					</li>
 
-					<li class="submenu">
+					{{/*<li class="submenu">
 						<a href="#"><i class="fa fa-folder-open"></i> <span>相册管理</span><i class="arrow fa fa-chevron-right"></i></a>
 						<ul>
 							<li><a href="">新增相册</a></li>
 							<li><a href="">相册列表</a></li>
 						</ul>
-					</li>
+					</li>*/}}
 
-					<li class="submenu">
+					{{/*<li class="submenu">
 						<a href="#"><i class="fa fa-picture-o"></i> <span>图片管理</span><i class="arrow fa fa-chevron-right"></i></a>
 						<ul>
 							<li><a href="">新增图片</a></li>
 							<li><a href="">图片列表</a></li>
 						</ul>
-					</li>
+					</li>*/}}
 
-                    <li class="submenu">
+                    <li class="submenu" data-control="admin_user">
                         <a href="#"><i class="fa fa-user-md"></i> <span>后台用户管理</span><i class="arrow fa fa-chevron-right"></i></a>
                         <ul>
                             <li><a href="/admin/admin_user/add">新增用户</a></li>
@@ -113,7 +120,7 @@
                         </ul>
                     </li>
 
-					<li class="submenu">
+					<li class="submenu" data-control="system">
 						<a href="#"><i class="fa fa-windows"></i> <span>系统设置</span> <i class="arrow fa fa-chevron-right"></i></a>
 						<ul>
 							<li><a href="">基本设置</a></li>

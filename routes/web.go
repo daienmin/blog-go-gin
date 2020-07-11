@@ -78,6 +78,15 @@ func WebRoutes(r *gin.Engine) {
 	adminRoute.POST("/article/edit/:id", admin.ArticleUpdate)
 	adminRoute.GET("/article/del/:id", admin.ArticleDel)
 
+	// 导航管理
+	adminRoute.GET("/nav/index", admin.NavIndex)
+	//adminRoute.GET("/nav/index/:page", admin.NavIndex)
+	adminRoute.GET("/nav/add", admin.NavAdd)
+	adminRoute.POST("/nav/add", admin.NavCreate)
+	adminRoute.GET("/nav/edit/:id", admin.NavEdit)
+	adminRoute.POST("/nav/edit/:id", admin.NavUpdate)
+	adminRoute.GET("/nav/del/:id", admin.NavDel)
+
 	// 友情链接管理
 	adminRoute.GET("/link/index", admin.LinkIndex)
 	//adminRoute.GET("/link/index/:page", admin.LinkIndex)
