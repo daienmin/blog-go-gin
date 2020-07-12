@@ -6,15 +6,15 @@ import (
 )
 
 func Index(c *gin.Context) {
-	c.HTML(http.StatusOK, "home/index.html", gin.H{})
+	c.HTML(http.StatusOK, "home1/index.html", gin.H{})
 }
 
 func Category(c *gin.Context) {
-	c.HTML(http.StatusOK, "home/list.html", gin.H{})
+	c.HTML(http.StatusOK, "home1/list.html", gin.H{})
 }
 
 func Article(c *gin.Context) {
-	c.HTML(http.StatusOK, "home/info.html", gin.H{})
+	c.HTML(http.StatusOK, "home1/info.html", gin.H{})
 }
 
 func About(c *gin.Context) {

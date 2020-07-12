@@ -1,0 +1,51 @@
+{{define "home1/header.html"}}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>代恩民博客</title>
+    <meta name="keywords" content="代恩民,博客,代恩民博客,技术博客" />
+    <meta name="description" content="代恩民的php博客,个人技术博客" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/public/css/home1/index.css" rel="stylesheet">
+    <script src="/public/js/home1/jquery.min.js" ></script>
+    <script src="/public/js/home1/comm.js" ></script>
+    <!--[if lt IE 9]>
+    <script src="/public/js/home1/modernizr.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <div class="logo">代恩民博客</div>
+    <div class="top-nav">
+        <h2 id="mnavh"><span class="navicon"></span></h2>
+        <ul id="nav">
+            <li><a href="/">首页</a></li>
+
+            {{/*<li><a href="/">关于我</a></li>
+            <li><a href="/">留言</a></li>*/}}
+        </ul>
+    </div>
+    {{/*<div class="search">
+        <form action="#" method="get" name="searchform" id="searchform">
+            <input name="keyboard" id="keyboard" class="input_text" value="搜索你喜欢的" style="color: rgb(153, 153, 153);" onfocus="if(value=='搜索你喜欢的'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='搜索你喜欢的'}" type="text">
+            <input name="show" value="title" type="hidden">
+            <input name="tempid" value="1" type="hidden">
+            <input name="tbname" value="news" type="hidden">
+            <input name="Submit" class="input_submit" value="" type="submit">
+        </form>
+    </div>*/}}
+</header>
+<aside class="side">
+    <div class="about">
+        <i><img src="/public/images/home1/avatar.jpg"></i>
+        <p>代恩民</p>
+        <p>一个一直在努力的phper</p>
+        <p>Github: <a href="//github.com/daienmin" target="_blank">daienmin</a></p>
+    </div>
+    <div class="weixin"> <img src="/public/images/wx.jpg">
+        <p>我的微信</p>
+    </div>
+</aside>
+<main>
+{{end}}
