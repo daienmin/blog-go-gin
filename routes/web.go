@@ -6,25 +6,18 @@ import (
 	"blog-go-gin/app/controllers/web"
 	"blog-go-gin/app/controllers"
 	"blog-go-gin/app/middleware"
-	//"html/template"
-	//"blog-go-gin/app/model/article"
+	"html/template"
+	"blog-go-gin/app/model/common"
 )
-
-/*func CanSelected(id uint32, aTags []article.ArtTags) string {
-	for _, v := range aTags {
-		if v.TagId == id {
-			return "selected"
-		}
-	}
-	return ""
-}*/
 
 func WebRoutes(r *gin.Engine) {
 
 	// 注册模板函数
-	/*r.SetFuncMap(template.FuncMap{
-		"canSelected": CanSelected,
-	})*/
+	r.SetFuncMap(template.FuncMap{
+		"getArtCate": common.GetArtCate, // 获取文章分类名
+		"getArtTags": common.GetArtTags, // 获取文章标签名
+		"mod":        common.Mod,        // 获取文章标签名
+	})
 
 	// 配置模板目录
 	r.LoadHTMLGlob("app/views/**/*")
@@ -34,8 +27,14 @@ func WebRoutes(r *gin.Engine) {
 
 	// 验证码
 	r.GET("/captcha", func(c *gin.Context) {
-		controllers.Captcha(c,4)
+		controllers.Captcha(c, 4)
 	})
+
+	// 前台
+	r.GET("/", web.Index)
+	r.GET("/category/:id", web.Category)
+	r.GET("/article/:id", web.Article)
+	r.GET("/tag/:id", web.TagList)
 
 	// 后台
 	r.GET("/admin/login", admin.Login)
@@ -104,15 +103,5 @@ func WebRoutes(r *gin.Engine) {
 	adminRoute.GET("/admin_user/edit/:id", admin.AdminUserEdit)
 	adminRoute.POST("/admin_user/edit/:id", admin.AdminUserUpdate)
 	adminRoute.GET("/admin_user/del/:id", admin.AdminUserDel)
-
-
-
-	// 前台
-	r.GET("/", web.Index)
-	r.GET("/category/:id", web.Category)
-	r.GET("/article/:id", web.Article)
-	r.GET("/about", web.About)
-	r.GET("/share", web.Share)
-	r.GET("/share/:id", web.ShareInfo)
 
 }

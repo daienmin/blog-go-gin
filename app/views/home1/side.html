@@ -1,0 +1,48 @@
+{{define "home1/side.html"}}
+<div class="rside">
+    <div class="b-tags">
+        <h4 class="b-title">标签云</h4>
+        <ul class="b-all-tname">
+        {{range $k, $v := .tagStat}}
+            <li class="b-tname">
+                <a class="b-tag-style-{{mod $k 3}}" href="/tag/{{$v.Id}}">{{$v.Name}} ({{$v.Num}})</a>
+            </li>
+        {{end}}
+        </ul>
+    </div>
+
+
+    <div class="news">
+        <h4 class="newstitle">文章排行</h4>
+        <ul>
+        {{range $k, $v := .hotViews}}
+            <li><a href="/article/{{$v.Id}}" title="{{$v.Title}}">{{$v.Title}}</a></li>
+        {{end}}
+        </ul>
+    </div>
+
+    <div class="news">
+        <h4 class="newstitle">置顶文章</h4>
+        <ul>
+        {{range $k, $v := .topList}}
+            <li><a href="/article/{{$v.Id}}" title="{{$v.Title}}">{{$v.Title}}</a></li>
+        {{end}}
+        </ul>
+    </div>
+
+    <div class="news">
+        <h4 class="newstitle">推荐文章</h4>
+        <ul>
+        {{range $k, $v := .recommendList}}
+            <li><a href="/article/{{$v.Id}}" title="{{$v.Title}}">{{$v.Title}}</a></li>
+        {{end}}
+        </ul>
+    </div>
+
+    <div class="news">
+        <h4 class="newstitle">友情链接</h4>
+        <ul>
+        </ul>
+    </div>
+</div>
+{{end}}

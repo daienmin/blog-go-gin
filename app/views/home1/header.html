@@ -21,30 +21,32 @@
     <div class="top-nav">
         <h2 id="mnavh"><span class="navicon"></span></h2>
         <ul id="nav">
-            <li><a href="/">首页</a></li>
-
-            {{/*<li><a href="/">关于我</a></li>
-            <li><a href="/">留言</a></li>*/}}
+            {{range $k, $v := .navs}}
+            <li><a href="{{$v.Url}}" title="">{{$v.Name}}</a></li>
+            {{end}}
         </ul>
     </div>
-    {{/*<div class="search">
+    <div class="search">
         <form action="#" method="get" name="searchform" id="searchform">
             <input name="keyboard" id="keyboard" class="input_text" value="搜索你喜欢的" style="color: rgb(153, 153, 153);" onfocus="if(value=='搜索你喜欢的'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='搜索你喜欢的'}" type="text">
-            <input name="show" value="title" type="hidden">
-            <input name="tempid" value="1" type="hidden">
-            <input name="tbname" value="news" type="hidden">
             <input name="Submit" class="input_submit" value="" type="submit">
         </form>
-    </div>*/}}
+    </div>
 </header>
 <aside class="side">
     <div class="about">
         <i><img src="/public/images/home1/avatar.jpg"></i>
-        <p>代恩民</p>
-        <p>一个一直在努力的phper</p>
-        <p>QQ: 952423380</p>
-        <p>Email: daiem@daiem.cn</p>
-        <p>Github: <a href="//github.com/daienmin" style="color: #fff;" target="_blank">daienmin</a></p>
+        <p style="text-align: center;">代恩民</p>
+        <p>&nbsp;</p>
+        <p>一个相信<br><?php <br>echo "PHP是世界上最好的语言";<br>?><br>的软件攻城狮</p>
+        <p>&nbsp;</p>
+        <p>
+            <a href="//github.com/daienmin" style="color: #fff;" target="_blank">GitHub</a>
+            &nbsp;|&nbsp;
+            <a href="//gitee.com/daienmin" style="color: #fff;" target="_blank">Gitee</a>
+        </p>
+        <p>QQ: <a href="tencent://message/?uin=952423380" style="color: #fff;" target="_blank">952423380</a></p>
+        <p>Email: <a href="mailto:daiem@daiem.cn" style="color: #fff;">daiem@daiem.cn</a></p>
     </div>
     <div class="weixin">
         <img src="/public/images/wx.jpg">

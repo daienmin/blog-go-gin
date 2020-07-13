@@ -62,3 +62,15 @@ func DeleteData(id int) error {
 	_, err := Db.Exec(sqlStr, id)
 	return err
 }
+
+func GetNavs() []Nav {
+	sqlStr := "SELECT * FROM navs ORDER BY sort ASC"
+	Db := db.GetDb()
+	var data []Nav
+	err := Db.Select(&data, sqlStr)
+	if err != nil {
+		fmt.Printf("select from navs err:%#v\n", err)
+		return []Nav{}
+	}
+	return data
+}

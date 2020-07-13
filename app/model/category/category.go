@@ -68,3 +68,19 @@ func DeleteData(id int) error {
 	_, err := Db.Exec(sqlStr, id)
 	return err
 }
+
+func GetArtCates(ids string) map[uint32]string {
+	sqlStr := "SELECT * FROM categories WHERE id IN(?)"
+	Db := db.GetDb()
+	var cate []Category
+	err := Db.Select(&cate, sqlStr, ids)
+	if err != nil {
+		fmt.Printf("query err:%#v\n", err)
+		return make(map[uint32]string, 0)
+	}
+	res := make(map[uint32]string, 100)
+	for _, v := range cate {
+		res[v.Id] = v.Name
+	}
+	return res
+}

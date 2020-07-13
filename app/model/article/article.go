@@ -27,8 +27,19 @@ type Article struct {
 type ArtTags struct {
 	ArticleId uint32 `db:"article_id" json:"article_id"`
 	TagId     uint32 `db:"tag_id" json:"tag_id"`
-	CreatedAt  string `db:"created_at" json:"created_at"`
+	CreatedAt string `db:"created_at" json:"created_at"`
 	UpdatedAt string `db:"updated_at" json:"updated_at"`
+}
+
+type IndexList struct {
+	Article Article
+	Tags    []ArtTags
+}
+
+type TagStat struct {
+	Num  uint32 `db:"num" json:"num"`
+	Id   uint32 `db:"id" json:"id"`
+	Name string `db:"name" json:"name"`
 }
 
 func GetList(offset, pageSize int) []Article {
@@ -45,7 +56,7 @@ func GetList(offset, pageSize int) []Article {
 
 func GetCount() (totalRows int) {
 	Db := db.GetDb()
-	countSql := "SELECT COUNT(*) as num FROM articles ORDER BY id desc"
+	countSql := "SELECT COUNT(*) as num FROM articles"
 	totalRows = 0
 	err := Db.Get(&totalRows, countSql)
 	if err != nil {
@@ -128,4 +139,72 @@ func GetTags(aid uint32) []ArtTags {
 		return []ArtTags{}
 	}
 	return aTags
+}
+
+func GetIndexList(nums int) []IndexList {
+	Db := db.GetDb()
+	// 获取文章列表
+	selectSql := fmt.Sprintf("SELECT * FROM articles WHERE status=1 ORDER BY id desc LIMIT %d", nums)
+	var arts []Article
+	err := Db.Select(&arts, selectSql)
+	if err != nil {
+		fmt.Printf("select articles err:%#v\n", err)
+		return []IndexList{}
+	}
+	var res []IndexList
+	for _, v := range arts {
+		artTags := GetTags(v.Id)
+		tmp := IndexList{
+			Article: v,
+			Tags:    artTags,
+		}
+		res = append(res, tmp)
+	}
+	return res
+}
+
+func GetTagsStat() []TagStat {
+	sqlStr := `SELECT count(a.tag_id) as num,c.id,c.name FROM article_tags a 
+				LEFT JOIN articles b ON a.article_id = b.id 
+				LEFT JOIN tags c ON a.tag_id = c.id 
+				WHERE b.status=1 GROUP BY a.tag_id`
+	Db := db.GetDb()
+	var data []TagStat
+	err := Db.Select(&data, sqlStr)
+	if err != nil {
+		fmt.Printf("get tags stat err:%#v\n", err)
+		return []TagStat{}
+	}
+	return data
+}
+
+func GetArtByParam(gType int) []Article {
+	Db := db.GetDb()
+	var selectSql string
+	switch gType {
+	case 0: // 热门查看排行
+		selectSql = "SELECT * FROM articles WHERE status=1 ORDER BY views desc LIMIT 8"
+	case 1: // 置顶文章
+		selectSql = "SELECT * FROM articles WHERE status=1 AND is_top=1 ORDER BY id desc LIMIT 8"
+	case 2: // 推荐文章
+		selectSql = "SELECT * FROM articles WHERE status=1 AND is_recommend=1 ORDER BY id desc LIMIT 8"
+	}
+	var arts []Article
+	err := Db.Select(&arts, selectSql)
+	if err != nil {
+		fmt.Printf("select articles err:%#v\n", err)
+		return []Article{}
+	}
+	return arts
+}
+
+func GetArtInfo(id string) (art Article) {
+	sqlStr := "SELECT * FROM articles WHERE id=? AND status=1"
+	Db := db.GetDb()
+	err := Db.Get(&art, sqlStr, id)
+	if err != nil {
+		fmt.Printf("query err:%#v\n", err)
+		return
+	}
+	return
 }
