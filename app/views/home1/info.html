@@ -2,35 +2,43 @@
 {{template "home1/header.html"}}
 <div class="main-content">
 
-    <div class="welcome">您现在的位置是：首页>个人博客模板</div>
+    <div class="welcome"><a href="/" title="首页">首页</a> > {{.art.Title}}</div>
     <div class="blogbox">
       <div class="contentbox">
-        <h2 class="contitle">【匆匆那些年】总结个人博客经历的这四年…</h2>
-        <p class="bloginfo"><span>杨青</span><span>2018年3月19日</span><span><a href="/">个人博客模板</a></span></p>
-        <p class="jianjie"><b>简介</b>博客从最初的域名购买，到上线已经有四年的时间了，这四年的时间，有笑过，有怨过，有悔过，有执着过，也有放弃过…但最后还是坚持了下来，时间如此匆匆，等再回过头已来不及去弥补...</p>
+        <h2 class="contitle">{{.art.Title}}</h2>
+        <p class="bloginfo">
+            <span>{{.art.Author}}</span>
+            <span>{{.art.CreatedAt}}</span>
+            <span><a href="/category/{{.art.CategoryId}}">{{getArtCate .art.CategoryId}}</a></span>
+            {{$tagLen := len .artTag}}
+            {{if gt $tagLen 0}}
+            <span>
+            {{range $kk, $vv := .artTag}}
+                <a href="/tag/{{$vv.TagId}}">{{getArtTags $vv.TagId}}</a>
+            {{end}}
+            </span>
+            {{end}}
+        </p>
+        <p class="jianjie"><b>简介</b>{{.art.Description}}</p>
         <div class="entry">
-          <p>博客从最初的域名购买，到上线已经有四年的时间了，这四年的时间，有笑过，有怨过，有悔过，有执着过，也有放弃过…但最后还是坚持了下来，时间如此匆匆，等再回过头已来不及去弥补…</p>
-          <p><strong>新增那些出色的功能：</strong></p>
-           <p><img src="http://www.yangqq.com/d/file/jstt/bj/2015-01-09/bb9e1b25215426d6c375e453c756f136.jpg"></p>
-          <p>新功能：</p>
-          <p>1、支持4K高分辨率，在4K分辨率的显示器上可以获得佳效果。</p>
-          <p>2、PDF这个功能加强，CAD2018生成的PDF文件可以存储为几何对象。</p>
-          <p>3、视觉效果加强，优化填充和显示性能。</p>
-          <p>4、图形卡的反走样和高质量图形可以相互独立控制。</p>
-          <p>5、外部参照路径改为为&lt;相对&gt;，功能变得更强大。</p>
-          <p>6、更新DWG格式，打开和保存速度更快。</p>
-          <p>AutoCAD2018官方破解中文版64位安装教程：</p>
-          <p>1、下载AutoCAD2018官方破解中文版64位的软件，然后解压。</p>
-          <p>2、根据提示安装完成。</p>
-          <p>3、打开AutoCAD2018输入序列号和密钥（666-69696969,001J1）</p>
-          <p>4、打开注册机开始激活</p>
-          <p>5、把申请号粘贴到注册机里面生成激活码，把激活码粘贴到AutoCAD2018激活界面里面。</p>
-          <p>6、点击下一步，激活完成</p>
+          {{.artContent}}
         </div>
 
         <div class="nextinfo">
-          <p>上一篇：<a href="/download/f/881.html">纯文字个人博客模板《时尚黑》</a></p>
-          <p>下一篇：<a href="/download/f/886.html">html5 个人博客模板《蓝色畅想》</a></p>
+          <p>上一篇：
+              {{if ne .optArt.PrefArt.Title ""}}
+                  <a href="/article/{{.optArt.PrefArt.Id}}">{{.optArt.PrefArt.Title}}</a>
+              {{else}}
+              没有了
+              {{end}}
+          </p>
+          <p>下一篇：
+              {{if ne .optArt.NextArt.Title ""}}
+              <a href="/article/{{.optArt.NextArt.Id}}">{{.optArt.NextArt.Title}}</a>
+              {{else}}
+              没有了
+              {{end}}
+          </p>
         </div>
       </div>
       

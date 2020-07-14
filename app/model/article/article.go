@@ -42,6 +42,11 @@ type TagStat struct {
 	Name string `db:"name" json:"name"`
 }
 
+type OptArt struct {
+	PrefArt Article
+	NextArt Article
+}
+
 func GetList(offset, pageSize int) []Article {
 	Db := db.GetDb()
 	selectSql := fmt.Sprintf("SELECT * FROM articles ORDER BY id desc LIMIT %d,%d", offset, pageSize)
@@ -129,6 +134,7 @@ func UpdateData(art *Article, tagIds []string, id string) error {
 	return nil
 }
 
+// 获取文章标签
 func GetTags(aid uint32) []ArtTags {
 	Db := db.GetDb()
 	var aTags []ArtTags
@@ -141,6 +147,7 @@ func GetTags(aid uint32) []ArtTags {
 	return aTags
 }
 
+// 首页最新文章列表
 func GetIndexList(nums int) []IndexList {
 	Db := db.GetDb()
 	// 获取文章列表
@@ -163,6 +170,7 @@ func GetIndexList(nums int) []IndexList {
 	return res
 }
 
+// 标签云
 func GetTagsStat() []TagStat {
 	sqlStr := `SELECT count(a.tag_id) as num,c.id,c.name FROM article_tags a 
 				LEFT JOIN articles b ON a.article_id = b.id 
@@ -178,6 +186,7 @@ func GetTagsStat() []TagStat {
 	return data
 }
 
+// 查看排行、置顶、推荐文章列表
 func GetArtByParam(gType int) []Article {
 	Db := db.GetDb()
 	var selectSql string
@@ -198,6 +207,7 @@ func GetArtByParam(gType int) []Article {
 	return arts
 }
 
+// 文章详情页获取文章内容
 func GetArtInfo(id string) (art Article) {
 	sqlStr := "SELECT * FROM articles WHERE id=? AND status=1"
 	Db := db.GetDb()
@@ -207,4 +217,96 @@ func GetArtInfo(id string) (art Article) {
 		return
 	}
 	return
+}
+
+// 文章详情获取上一篇下一篇文章
+func GetOptArt(id uint32) OptArt {
+	sqlStr := "SELECT * FROM articles WHERE id > ? AND status=1 ORDER BY id ASC LIMIT 1"
+	var prefArt Article
+	Db := db.GetDb()
+	err := Db.Get(&prefArt, sqlStr, id)
+	if err != nil {
+		fmt.Printf("get prefix article err: %#v\n", err)
+	}
+	var nextArt Article
+	sqlStr = "SELECT * FROM articles WHERE id < ? AND status=1 ORDER BY id DESC LIMIT 1"
+	err = Db.Get(&nextArt, sqlStr, id)
+	if err != nil {
+		fmt.Printf("get next article err: %#v\n", err)
+	}
+	return OptArt{
+		PrefArt: prefArt,
+		NextArt: nextArt,
+	}
+}
+
+// 分类列表文章总数
+func GetCateArtCount(id string) (totalRows int) {
+	Db := db.GetDb()
+	countSql := "SELECT COUNT(*) as num FROM articles WHERE category_id=? AND status=1"
+	totalRows = 0
+	err := Db.Get(&totalRows, countSql, id)
+	if err != nil {
+		fmt.Printf("count article err:%#v\n", err)
+		return
+	}
+	return
+}
+
+// 分类列表页
+func GetCateArtList(id string, offset, pageSize int) []IndexList {
+	Db := db.GetDb()
+	// 获取文章列表
+	selectSql := fmt.Sprintf("SELECT * FROM articles WHERE category_id=%s AND status=1 ORDER BY id desc LIMIT %d,%d", id, offset, pageSize)
+	var arts []Article
+	err := Db.Select(&arts, selectSql)
+	if err != nil {
+		fmt.Printf("select articles err:%#v\n", err)
+		return []IndexList{}
+	}
+	var res []IndexList
+	for _, v := range arts {
+		artTags := GetTags(v.Id)
+		tmp := IndexList{
+			Article: v,
+			Tags:    artTags,
+		}
+		res = append(res, tmp)
+	}
+	return res
+}
+
+func GetTagArtCount(id string) (totalRows int) {
+	Db := db.GetDb()
+	countSql := "SELECT COUNT(*) as num FROM article_tags a LEFT JOIN articles b ON a.article_id=b.id WHERE tag_id=? AND b.status=1"
+	totalRows = 0
+	err := Db.Get(&totalRows, countSql, id)
+	if err != nil {
+		fmt.Printf("count tag article err:%#v\n", err)
+		return
+	}
+	return
+}
+
+// 分类列表页
+func GetTagArtList(id string, offset, pageSize int) []IndexList {
+	Db := db.GetDb()
+	// 获取文章列表
+	selectSql := fmt.Sprintf("SELECT b.* FROM article_tags a LEFT JOIN articles b ON a.article_id=b.id WHERE a.tag_id=%s AND b.status=1 ORDER BY b.id desc LIMIT %d,%d", id, offset, pageSize)
+	var arts []Article
+	err := Db.Select(&arts, selectSql)
+	if err != nil {
+		fmt.Printf("select articles err:%#v\n", err)
+		return []IndexList{}
+	}
+	var res []IndexList
+	for _, v := range arts {
+		artTags := GetTags(v.Id)
+		tmp := IndexList{
+			Article: v,
+			Tags:    artTags,
+		}
+		res = append(res, tmp)
+	}
+	return res
 }

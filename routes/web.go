@@ -33,8 +33,10 @@ func WebRoutes(r *gin.Engine) {
 	// 前台
 	r.GET("/", web.Index)
 	r.GET("/category/:id", web.Category)
+	r.GET("/category/:id/:page", web.Category)
 	r.GET("/article/:id", web.Article)
 	r.GET("/tag/:id", web.TagList)
+	r.GET("/tag/:id/:page", web.TagList)
 
 	// 后台
 	r.GET("/admin/login", admin.Login)

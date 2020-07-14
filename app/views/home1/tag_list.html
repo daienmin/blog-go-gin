@@ -1,11 +1,11 @@
-{{define "home1/index.html"}}
+{{define "home1/tag_list.html"}}
 {{template "home1/header.html" .}}
 <div class="main-content">
-    <div class="welcome">你好，欢迎访问我的博客！</div>
+    <div class="welcome"><a href="/" title="首页">首页</a> > 拥有“{{.tagInfo.Name}}”标签的文章</div>
     <div class="blogbox">
         <div class="bloglist">
             <ul>
-                {{range $k,$v := .list}}
+            {{range $k,$v := .list}}
                 <li>
                     <h2><a href="/article/{{$v.Article.Id}}">{{$v.Article.Title}}</a></h2>
                     <i><a href="/article/{{$v.Article.Id}}"><img src="{{$v.Article.Cover}}"></a></i>
@@ -13,22 +13,25 @@
                     <p class="bloginfo">
                         <span>{{$v.Article.Author}}</span>
                         <span>{{$v.Article.CreatedAt}}</span>
-                        <span><a href="/category/{{$v.Article.CategoryId}}">{{getArtCate $v.Article.CategoryId}}</a></span>
-                        {{$tagLen := len $v.Tags}}
-                        {{if gt $tagLen 0}}
+                        <span><a
+                                href="/category/{{$v.Article.CategoryId}}">{{getArtCate $v.Article.CategoryId}}</a></span>
+                    {{$tagLen := len $v.Tags}}
+                    {{if gt $tagLen 0}}
                         <span>
                         {{range $kk, $vv := $v.Tags}}
                             <a href="/tag/{{$vv.TagId}}">{{getArtTags $vv.TagId}}</a>
                         {{end}}
                         </span>
-                        {{end}}
+                    {{end}}
                     </p>
                 </li>
-                {{end}}
+            {{end}}
             </ul>
         </div>
+        <div style="text-align: center;">
+        {{ .pageHtml }}
+        </div>
     </div>
-
-    {{template "home1/side.html" .}}
-    {{template "home1/footer.html"}}
+{{template "home1/side.html" .}}
+{{template "home1/footer.html"}}
 {{end}}
