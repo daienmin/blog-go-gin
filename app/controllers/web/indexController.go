@@ -12,14 +12,29 @@ import (
 	"blog-go-gin/app/model/tag"
 )
 
+var (
+	tagStat       []article.TagStat
+	hotViews      []article.Article
+	topList       []article.Article
+	recommendList []article.Article
+	navs          []nav.Nav
+	allCate       []category.Category
+)
+
+func common() {
+	tagStat = article.GetTagsStat()
+	hotViews = article.GetArtByParam(0)
+	topList = article.GetArtByParam(1)
+	recommendList = article.GetArtByParam(2)
+	navs = nav.GetNavs()
+	allCate = category.GetList(true)
+}
+
 // 首页
 func Index(c *gin.Context) {
 	list := article.GetIndexList(15)
-	tagStat := article.GetTagsStat()
-	hotViews := article.GetArtByParam(0)
-	topList := article.GetArtByParam(1)
-	recommendList := article.GetArtByParam(2)
-	navs := nav.GetNavs()
+
+	common()
 	c.HTML(http.StatusOK, "home1/index.html", gin.H{
 		"list":          list,
 		"tagStat":       tagStat,
@@ -27,6 +42,7 @@ func Index(c *gin.Context) {
 		"topList":       topList,
 		"recommendList": recommendList,
 		"navs":          navs,
+		"allCate":       allCate,
 	})
 }
 
@@ -58,11 +74,7 @@ func Category(c *gin.Context) {
 		pageHtml = pg.Create()
 	}
 
-	tagStat := article.GetTagsStat()
-	hotViews := article.GetArtByParam(0)
-	topList := article.GetArtByParam(1)
-	recommendList := article.GetArtByParam(2)
-	navs := nav.GetNavs()
+	common()
 	c.HTML(http.StatusOK, "home1/list.html", gin.H{
 		"list":          list,
 		"pageHtml":      template.HTML(pageHtml),
@@ -72,6 +84,7 @@ func Category(c *gin.Context) {
 		"topList":       topList,
 		"recommendList": recommendList,
 		"navs":          navs,
+		"allCate":       allCate,
 	})
 }
 
@@ -82,11 +95,7 @@ func Article(c *gin.Context) {
 	artTag := article.GetTags(art.Id)
 	optArt := article.GetOptArt(art.Id)
 
-	tagStat := article.GetTagsStat()
-	hotViews := article.GetArtByParam(0)
-	topList := article.GetArtByParam(1)
-	recommendList := article.GetArtByParam(2)
-	navs := nav.GetNavs()
+	common()
 	c.HTML(http.StatusOK, "home1/info.html", gin.H{
 		"art":           art,
 		"artContent":    template.HTML(art.Html),
@@ -97,6 +106,7 @@ func Article(c *gin.Context) {
 		"topList":       topList,
 		"recommendList": recommendList,
 		"navs":          navs,
+		"allCate":       allCate,
 	})
 }
 
@@ -128,11 +138,7 @@ func TagList(c *gin.Context) {
 		pageHtml = pg.Create()
 	}
 
-	tagStat := article.GetTagsStat()
-	hotViews := article.GetArtByParam(0)
-	topList := article.GetArtByParam(1)
-	recommendList := article.GetArtByParam(2)
-	navs := nav.GetNavs()
+	common()
 	c.HTML(http.StatusOK, "home1/tag_list.html", gin.H{
 		"list":          list,
 		"pageHtml":      template.HTML(pageHtml),
@@ -142,5 +148,6 @@ func TagList(c *gin.Context) {
 		"topList":       topList,
 		"recommendList": recommendList,
 		"navs":          navs,
+		"allCate":       allCate,
 	})
 }

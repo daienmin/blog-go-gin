@@ -1,5 +1,15 @@
 {{define "home1/side.html"}}
 <div class="rside">
+
+    <div class="cate">
+        <h4 class="cate-title">全部分类</h4>
+        <ul>
+            {{range $k, $v := .allCate}}
+            <li><a href="/category/{{$v.Id}}">{{$v.Name}}</a></li>
+            {{end}}
+        </ul>
+    </div>
+
     <div class="b-tags">
         <h4 class="b-title">标签云</h4>
         <ul class="b-all-tname">
