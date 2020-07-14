@@ -13,16 +13,15 @@
                     <p class="bloginfo">
                         <span>{{$v.Article.Author}}</span>
                         <span>{{$v.Article.CreatedAt}}</span>
-                        <span><a
-                                href="/category/{{$v.Article.CategoryId}}">{{getArtCate $v.Article.CategoryId}}</a></span>
-                    {{$tagLen := len $v.Tags}}
-                    {{if gt $tagLen 0}}
+                        <span><a href="/category/{{$v.Article.CategoryId}}">{{getArtCate $v.Article.CategoryId}}</a></span>
+                        {{$tagLen := len $v.Tags}}
+                        {{if gt $tagLen 0}}
                         <span>
                         {{range $kk, $vv := $v.Tags}}
                             <a href="/tag/{{$vv.TagId}}">{{getArtTags $vv.TagId}}</a>
                         {{end}}
                         </span>
-                    {{end}}
+                        {{end}}
                     </p>
                 </li>
             {{end}}

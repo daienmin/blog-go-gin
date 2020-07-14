@@ -8,7 +8,9 @@
                 {{range $k,$v := .list}}
                 <li>
                     <h2><a href="/article/{{$v.Article.Id}}">{{$v.Article.Title}}</a></h2>
+                    {{if ne $v.Article.Cover ""}}
                     <i><a href="/article/{{$v.Article.Id}}"><img src="{{$v.Article.Cover}}"></a></i>
+                    {{end}}
                     <p class="blogtext">{{$v.Article.Description}}</p>
                     <p class="bloginfo">
                         <span>{{$v.Article.Author}}</span>
