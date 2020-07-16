@@ -3,9 +3,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>代恩民博客</title>
-    <meta name="keywords" content="代恩民,博客,代恩民博客,技术博客" />
-    <meta name="description" content="代恩民的php博客,个人技术博客" />
+    <title>{{.seoTitle}}</title>
+    <meta name="keywords" content="{{.seoKeywords}}" />
+    <meta name="description" content="{{.seoDescription}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/public/css/home1/index.css" rel="stylesheet">
     <script src="/public/js/home1/jquery.min.js" ></script>
@@ -14,6 +14,7 @@
     <script src="/public/js/home1/modernizr.js"></script>
     <![endif]-->
     <link rel="shortcut icon" href="/public/images/fav.ico" />
+    {{.statCode}}
 </head>
 <body>
 <header>
@@ -38,7 +39,7 @@
         <i><img src="/public/images/home1/avatar.jpg"></i>
         <p style="text-align: center;">代恩民</p>
         <p>&nbsp;</p>
-        <p>一个相信<br><?php <br>echo "PHP是世界上最好的语言";<br>?><br>的软件攻城狮</p>
+        <p>一个坚信<br><?php <br>echo "PHP是世界上最好的语言";<br>?><br>的攻城狮</p>
         <p>&nbsp;</p>
         <p>
             <a href="//github.com/daienmin" style="color: #fff;" target="_blank">GitHub</a>

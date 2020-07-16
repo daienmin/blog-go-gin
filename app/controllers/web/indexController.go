@@ -10,15 +10,21 @@ import (
 	"blog-go-gin/lib/paginator"
 	"blog-go-gin/app/model/category"
 	"blog-go-gin/app/model/tag"
+	"blog-go-gin/app/model/system"
 )
 
 var (
-	tagStat       []article.TagStat
-	hotViews      []article.Article
-	topList       []article.Article
-	recommendList []article.Article
-	navs          []nav.Nav
-	allCate       []category.Category
+	tagStat        []article.TagStat
+	hotViews       []article.Article
+	topList        []article.Article
+	recommendList  []article.Article
+	navs           []nav.Nav
+	allCate        []category.Category
+	seoTitle       string
+	seoKeywords    string
+	seoDescription string
+	statCode       string
+	copyIpc        string
 )
 
 func common() {
@@ -28,6 +34,12 @@ func common() {
 	recommendList = article.GetArtByParam(2)
 	navs = nav.GetNavs()
 	allCate = category.GetList(true)
+	sys := system.GetConfig()
+	seoTitle = sys["c_title"]
+	seoKeywords = sys["c_keywords"]
+	seoDescription = sys["c_description"]
+	statCode = sys["c_stat_code"]
+	copyIpc = sys["c_copy_icp"]
 }
 
 // 首页
@@ -36,13 +48,18 @@ func Index(c *gin.Context) {
 
 	common()
 	c.HTML(http.StatusOK, "home1/index.html", gin.H{
-		"list":          list,
-		"tagStat":       tagStat,
-		"hotViews":      hotViews,
-		"topList":       topList,
-		"recommendList": recommendList,
-		"navs":          navs,
-		"allCate":       allCate,
+		"list":           list,
+		"tagStat":        tagStat,
+		"hotViews":       hotViews,
+		"topList":        topList,
+		"recommendList":  recommendList,
+		"navs":           navs,
+		"allCate":        allCate,
+		"seoTitle":       seoTitle,
+		"seoKeywords":    seoKeywords,
+		"seoDescription": seoDescription,
+		"statCode":       template.HTML(statCode),
+		"copyIpc":        copyIpc,
 	})
 }
 
@@ -76,15 +93,20 @@ func Category(c *gin.Context) {
 
 	common()
 	c.HTML(http.StatusOK, "home1/list.html", gin.H{
-		"list":          list,
-		"pageHtml":      template.HTML(pageHtml),
-		"cate":          cate,
-		"tagStat":       tagStat,
-		"hotViews":      hotViews,
-		"topList":       topList,
-		"recommendList": recommendList,
-		"navs":          navs,
-		"allCate":       allCate,
+		"list":           list,
+		"pageHtml":       template.HTML(pageHtml),
+		"cate":           cate,
+		"tagStat":        tagStat,
+		"hotViews":       hotViews,
+		"topList":        topList,
+		"recommendList":  recommendList,
+		"navs":           navs,
+		"allCate":        allCate,
+		"seoTitle":       cate.Name + " - " + seoTitle,
+		"seoKeywords":    cate.KeyWords,
+		"seoDescription": cate.Description,
+		"statCode":       template.HTML(statCode),
+		"copyIpc":        copyIpc,
 	})
 }
 
@@ -97,16 +119,21 @@ func Article(c *gin.Context) {
 
 	common()
 	c.HTML(http.StatusOK, "home1/info.html", gin.H{
-		"art":           art,
-		"artContent":    template.HTML(art.Html),
-		"artTag":        artTag,
-		"optArt":        optArt,
-		"tagStat":       tagStat,
-		"hotViews":      hotViews,
-		"topList":       topList,
-		"recommendList": recommendList,
-		"navs":          navs,
-		"allCate":       allCate,
+		"art":            art,
+		"artContent":     template.HTML(art.Html),
+		"artTag":         artTag,
+		"optArt":         optArt,
+		"tagStat":        tagStat,
+		"hotViews":       hotViews,
+		"topList":        topList,
+		"recommendList":  recommendList,
+		"navs":           navs,
+		"allCate":        allCate,
+		"seoTitle":       art.Title + " - " + seoTitle,
+		"seoKeywords":    art.KeyWords,
+		"seoDescription": art.Description,
+		"statCode":       template.HTML(statCode),
+		"copyIpc":        copyIpc,
 	})
 }
 
@@ -140,14 +167,19 @@ func TagList(c *gin.Context) {
 
 	common()
 	c.HTML(http.StatusOK, "home1/tag_list.html", gin.H{
-		"list":          list,
-		"pageHtml":      template.HTML(pageHtml),
-		"tagInfo":       tagInfo,
-		"tagStat":       tagStat,
-		"hotViews":      hotViews,
-		"topList":       topList,
-		"recommendList": recommendList,
-		"navs":          navs,
-		"allCate":       allCate,
+		"list":           list,
+		"pageHtml":       template.HTML(pageHtml),
+		"tagInfo":        tagInfo,
+		"tagStat":        tagStat,
+		"hotViews":       hotViews,
+		"topList":        topList,
+		"recommendList":  recommendList,
+		"navs":           navs,
+		"allCate":        allCate,
+		"seoTitle":       tagInfo.Name + " - " + seoTitle,
+		"seoKeywords":    tagInfo.KeyWords,
+		"seoDescription": tagInfo.Description,
+		"statCode":       template.HTML(statCode),
+		"copyIpc":        copyIpc,
 	})
 }

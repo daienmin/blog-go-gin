@@ -106,4 +106,8 @@ func WebRoutes(r *gin.Engine) {
 	adminRoute.POST("/admin_user/edit/:id", admin.AdminUserUpdate)
 	adminRoute.GET("/admin_user/del/:id", admin.AdminUserDel)
 
+	// 系统设置
+	adminRoute.GET("/system", admin.SystemSet)
+	adminRoute.POST("/system", admin.SystemSave)
+
 }
