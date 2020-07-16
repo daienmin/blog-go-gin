@@ -43,7 +43,7 @@ func AdminUserEdit(c *gin.Context)  {
 		return
 	}
 	data := adminuser.GetOne(cId)
-	c.HTML(http.StatusOK, "admin/admin_uer_edit.html", gin.H{
+	c.HTML(http.StatusOK, "admin/admin_user_edit.html", gin.H{
 		"data": data,
 	})
 }
