@@ -310,3 +310,9 @@ func GetTagArtList(id string, offset, pageSize int) []IndexList {
 	}
 	return res
 }
+
+func Increment(id string) {
+	Db := db.GetDb()
+	sqlStr := "UPDATE articles SET views=views+1 WHERE id=?"
+	Db.Exec(sqlStr, id)
+}

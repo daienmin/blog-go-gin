@@ -11,18 +11,20 @@
                     <i><a href="/article/{{$v.Article.Id}}"><img src="{{$v.Article.Cover}}"></a></i>
                     <p class="blogtext">{{$v.Article.Description}}</p>
                     <p class="bloginfo">
-                        <span>{{$v.Article.Author}}</span>
-                        <span>{{$v.Article.CreatedAt}}</span>
-                        <span><a
-                                href="/category/{{$v.Article.CategoryId}}">{{getArtCate $v.Article.CategoryId}}</a></span>
-                    {{$tagLen := len $v.Tags}}
-                    {{if gt $tagLen 0}}
-                        <span>
+                        <span class="ico-author">{{$v.Article.Author}}</span>
+                        <span class="ico-c-time">{{$v.Article.CreatedAt}}</span>
+                        <span class="ico-category">
+                            <a href="/category/{{$v.Article.CategoryId}}">{{getArtCate $v.Article.CategoryId}}</a>
+                        </span>
+                        {{$tagLen := len $v.Tags}}
+                        {{if gt $tagLen 0}}
+                        <span class="ico-tag">
                         {{range $kk, $vv := $v.Tags}}
                             <a href="/tag/{{$vv.TagId}}">{{getArtTags $vv.TagId}}</a>
                         {{end}}
                         </span>
-                    {{end}}
+                        {{end}}
+                        <span class="ico-views">{{$v.Article.Views}}</span>
                     </p>
                 </li>
             {{end}}

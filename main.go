@@ -7,6 +7,7 @@ import (
 	"blog-go-gin/config"
 	"blog-go-gin/lib/db"
 	"blog-go-gin/lib/sess"
+	"blog-go-gin/lib/redis_pool"
 )
 
 func main() {
@@ -25,11 +26,20 @@ func main() {
 		return
 	}
 
+	cfg := config.GetCfg()
+
+	// 初始化redis链接池
+	err = redis_pool.InitPool(cfg.RedisHost + ":" + cfg.RedisPort, cfg.RedisPassword)
+	if err != nil {
+		fmt.Printf("err to init redis pool:%#v\n", err)
+		return
+	}
+
 	// 创建gin框架实例
 	r := gin.Default()
 
 	// 初始化session
-	r.Use(sess.Session(config.GetCfg().AppKey))
+	r.Use(sess.Session(cfg.AppKey))
 
 	// 加载路由
 	routes.WebRoutes(r)

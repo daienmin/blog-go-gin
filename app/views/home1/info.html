@@ -7,17 +7,20 @@
       <div class="contentbox">
         <h2 class="contitle">{{.art.Title}}</h2>
         <p class="bloginfo">
-            <span>{{.art.Author}}</span>
-            <span>{{.art.CreatedAt}}</span>
-            <span><a href="/category/{{.art.CategoryId}}">{{getArtCate .art.CategoryId}}</a></span>
+            <span class="ico-author">{{.art.Author}}</span>
+            <span class="ico-c-time">{{.art.CreatedAt}}</span>
+            <span class="ico-category">
+                <a href="/category/{{.art.CategoryId}}">{{getArtCate .art.CategoryId}}</a>
+            </span>
             {{$tagLen := len .artTag}}
             {{if gt $tagLen 0}}
-            <span>
+            <span class="ico-tag">
             {{range $kk, $vv := .artTag}}
                 <a href="/tag/{{$vv.TagId}}">{{getArtTags $vv.TagId}}</a>
             {{end}}
             </span>
             {{end}}
+            <span class="ico-views">{{.art.Views}}</span>
         </p>
         <p class="jianjie"><b>简介</b>{{.art.Description}}</p>
         <div class="entry">

@@ -18,7 +18,7 @@ type Cfg struct {
 	DbPassword    string `yaml:"db_password"`
 	RedisHost     string `yaml:"redis_host"`
 	RedisPassword string `yaml:"redis_password"`
-	RedisPort     uint16 `yaml:"redis_port"`
+	RedisPort     string `yaml:"redis_port"`
 	Port          string `yaml:"server_port"`
 	SessMaxAge    int    `yaml:"sess_max_age"`
 }

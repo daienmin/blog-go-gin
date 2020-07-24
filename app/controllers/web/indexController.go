@@ -11,6 +11,10 @@ import (
 	"blog-go-gin/app/model/category"
 	"blog-go-gin/app/model/tag"
 	"blog-go-gin/app/model/system"
+	"blog-go-gin/lib/redis_pool"
+	"fmt"
+	"github.com/garyburd/redigo/redis"
+	"blog-go-gin/config"
 )
 
 var (
@@ -116,6 +120,18 @@ func Article(c *gin.Context) {
 	art := article.GetArtInfo(id)
 	artTag := article.GetTags(art.Id)
 	optArt := article.GetOptArt(art.Id)
+
+	conn := redis_pool.GetRedis().Get()
+	rKey := config.GetCfg().AppName + ":art_" + c.ClientIP() + "_" + id
+	res, err := redis.Int(conn.Do("EXISTS", rKey))
+	if err != nil {
+		fmt.Printf("get redis key err:%#v\n", err)
+	}
+	if res == 0 {
+		conn.Do("SET", rKey, 1)
+		conn.Do("EXPIRE", rKey, 30 * 86400)
+		article.Increment(id)
+	}
 
 	common()
 	c.HTML(http.StatusOK, "home1/info.html", gin.H{
