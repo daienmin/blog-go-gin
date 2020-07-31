@@ -48,6 +48,14 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 col-lg-1 control-label">target</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <label><input type="radio" name="target" checked value="0" > self</label>
+                                    <label><input type="radio" name="target" value="1"/> blank</label>
+                                </div>
+                            </div>
+
 							<div class="form-actions">
 								<button type="button" class="btn btn-success btn-sm" id="addL">添加</button>
 								<button type="button" class="btn btn-danger btn-sm">取消</button>
@@ -67,6 +75,7 @@
     	var name=$('#name').val();
     	var url=$('#url').val();
     	var sort=$('#sort').val();
+        var target = $('input[name="target"]:checked').val();
 
 		$("#addL").attr("disabled",true);
 		$.ajax({
@@ -76,7 +85,8 @@
 			data:{
 			    "name": name,
 				"url": url,
-				"sort": sort
+				"sort": sort,
+				"target": target
 			},
 			success:function(data){
 				if(data.error==0){

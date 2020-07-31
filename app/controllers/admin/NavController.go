@@ -23,8 +23,9 @@ func NavCreate(c *gin.Context)  {
 	name := c.PostForm("name")
 	url := c.PostForm("url")
 	sort := c.PostForm("sort")
+	target := c.PostForm("target")
 
-	err := nav.InsertData(name, url, sort)
+	err := nav.InsertData(name, url, sort, target)
 	if err != nil {
 		fmt.Printf("insert data err:%#v\n", err)
 		c.JSON(http.StatusOK, gin.H{"error": 1, "msg": "添加导航失败，请稍后重试！"})
@@ -52,8 +53,9 @@ func NavUpdate(c *gin.Context)  {
 	name := c.PostForm("name")
 	url := c.PostForm("url")
 	sort := c.PostForm("sort")
+	target := c.PostForm("target")
 
-	err := nav.UpdateData(name, url, sort, id)
+	err := nav.UpdateData(name, url, sort, id, target)
 
 	if err != nil {
 		fmt.Printf("update data err:%#v\n", err)

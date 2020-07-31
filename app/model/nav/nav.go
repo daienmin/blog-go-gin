@@ -11,6 +11,7 @@ type Nav struct {
 	Name      string `db:"name" json:"name"`
 	Url       string `db:"url" json:"url"`
 	Sort      uint8  `db:"sort" json:"sort"`
+	Target    uint8  `db:"target" json:"target"`
 	CreatedAt string `db:"created_at" json:"created_at"`
 	UpdatedAt string `db:"updated_at" json:"updated_at"`
 }
@@ -27,12 +28,12 @@ func GetList() []Nav {
 	return data
 }
 
-func InsertData(name, url, sort string) error {
+func InsertData(name, url, sort, target string) error {
 	createdAt := helper.GetDateTime()
 	updatedAt := createdAt
 	Db := db.GetDb()
-	sqlStr := "INSERT INTO navs(name,url,sort,created_at,updated_at) VALUES(?,?,?,?,?)"
-	_, err := Db.Exec(sqlStr, name, url, sort, createdAt, updatedAt)
+	sqlStr := "INSERT INTO navs(name,url,sort,target,created_at,updated_at) VALUES(?,?,?,?,?,?)"
+	_, err := Db.Exec(sqlStr, name, url, sort, target, createdAt, updatedAt)
 	return err
 }
 
@@ -48,11 +49,11 @@ func GetOne(id int) Nav {
 	return data
 }
 
-func UpdateData(name, url, sort, id string) error {
+func UpdateData(name, url, sort, id, target string) error {
 	updatedAt := helper.GetDateTime()
 	Db := db.GetDb()
-	sqlStr := "UPDATE navs SET name=?,url=?,sort=?,updated_at=? WHERE id=?"
-	_, err := Db.Exec(sqlStr, name, url, sort, updatedAt, id)
+	sqlStr := "UPDATE navs SET name=?,url=?,sort=?,target=?,updated_at=? WHERE id=?"
+	_, err := Db.Exec(sqlStr, name, url, sort, target, updatedAt, id)
 	return err
 }
 

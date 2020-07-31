@@ -23,7 +23,7 @@
         <h2 id="mnavh"><span class="navicon"></span></h2>
         <ul id="nav">
             {{range $k, $v := .navs}}
-            <li><a href="{{$v.Url}}" title="">{{$v.Name}}</a></li>
+            <li><a href="{{$v.Url}}" title="" {{if eq $v.Target 1}}target="_blank"{{end}}>{{$v.Name}}</a></li>
             {{end}}
         </ul>
     </div>
