@@ -1,0 +1,70 @@
+{{define "home1/note.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>我的笔记 - 代恩民博客</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="笔记,代恩民笔记">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="./public/css/note/vue.css">
+    <link rel="stylesheet" href="./public/css/note/style.css">
+    <style type="text/css">
+
+    .sidebar {
+        padding-top: 0;
+    }
+    </style>
+
+    <link rel="stylesheet" href="./public/editor.md/css/editormd.preview.css" />
+</head>
+
+<body class="ready sticky">
+<main>
+    <aside class="sidebar">
+        <div class="sidebar-nav">
+            <ul>
+                {{range $k, $v := .baseDir}}
+                <li {{if gt $v.Level 0}}style="margin-left: {{$v.Level}}5px"{{end}}>
+                    {{if $v.IsDir}}
+                        <p>{{$v.Name}}</p>
+                        {{else}}
+                        <a href="javascript:void(0);" class="view-md" data-url="/note?path={{$v.EnPath}}" title="{{$v.Name}}">{{$v.Name}}</a>
+                        {{end}}
+                </li>
+                {{end}}
+            </ul>
+        </div>
+    </aside>
+    <section class="content">
+        <article class="markdown-section" id="main">
+        </article>
+    </section>
+</main>
+<script src="./public/js/jquery.min.js"></script>
+<script src="./public/editor.md/editormd.js"></script>
+<script src="./public/editor.md/lib/marked.min.js"></script>
+<script src="./public/editor.md/lib/prettify.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".view-md").click(function () {
+            var url = $(this).attr('data-url');
+            $.get(url, function (res) {
+                if (res.status === 0) {
+                    $("#main").html("");
+                    var testView = editormd.markdownToHTML("main", {
+                        markdown : res.info, // Also, you can dynamic set Markdown text
+                        // htmlDecode : true,  // Enable / disable HTML tag encode.
+                        // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
+                    });
+                } else {
+                    alert(res.msg);
+                }
+            })
+        });
+    });
+</script>
+</body>
+</html>
+{{end}}

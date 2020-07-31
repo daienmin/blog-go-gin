@@ -25,6 +25,9 @@ func WebRoutes(r *gin.Engine) {
 	// 配置静态资源目录
 	r.Static("/public", "./public")
 
+
+	r.Static("/images", "./mynote/images")
+
 	// 验证码
 	r.GET("/captcha", func(c *gin.Context) {
 		controllers.Captcha(c, 4)
@@ -37,6 +40,8 @@ func WebRoutes(r *gin.Engine) {
 	r.GET("/article/:id", web.Article)
 	r.GET("/tag/:id", web.TagList)
 	r.GET("/tag/:id/:page", web.TagList)
+
+	r.GET("/note", web.MyNote)
 
 	// 后台
 	r.GET("/admin/login", admin.Login)

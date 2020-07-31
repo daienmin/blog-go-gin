@@ -15,6 +15,8 @@ import (
 	"fmt"
 	"github.com/garyburd/redigo/redis"
 	"blog-go-gin/config"
+	"io/ioutil"
+	"strings"
 )
 
 var (
@@ -30,6 +32,15 @@ var (
 	statCode       string
 	copyIpc        string
 )
+
+type Info struct {
+	Name   string
+	EnPath string
+	IsDir  bool
+	Level  int64
+}
+
+var baseDir []Info
 
 func common() {
 	tagStat = article.GetTagsStat()
@@ -129,7 +140,7 @@ func Article(c *gin.Context) {
 	}
 	if res == 0 {
 		conn.Do("SET", rKey, 1)
-		conn.Do("EXPIRE", rKey, 30 * 86400)
+		conn.Do("EXPIRE", rKey, 30*86400)
 		article.Increment(id)
 	}
 
@@ -198,4 +209,54 @@ func TagList(c *gin.Context) {
 		"statCode":       template.HTML(statCode),
 		"copyIpc":        copyIpc,
 	})
+}
+
+func MyNote(c *gin.Context) {
+	pathStr := c.DefaultQuery("path", "")
+	if len(pathStr) > 0 {
+		if strings.HasPrefix(pathStr, "./mynote") && strings.HasSuffix(pathStr, ".md") {
+			info, err := ioutil.ReadFile(pathStr)
+			if err != nil {}
+			c.JSON(http.StatusOK, gin.H{
+				"status": 0,
+				"info": string(info),
+			})
+			return
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"status": 1,
+				"msg": "获取文件信息失败",
+			})
+			return
+		}
+	}
+	listDir("./mynote", 0)
+	c.HTML(http.StatusOK, "home1/note.html", gin.H{
+		"baseDir": baseDir,
+	})
+}
+
+func listDir(pathStr string, level int64) {
+	info, err := ioutil.ReadDir(pathStr)
+	if err != nil {
+		fmt.Printf("read dir error: %#v\n", err)
+		return
+	}
+	for _, v := range info {
+		tmpName := v.Name()
+		if tmpName == "images" || tmpName == ".git" || tmpName == "LICENSE" {
+			continue
+		}
+		isDir := v.IsDir()
+		info := Info{
+			Name:   tmpName,
+			EnPath: pathStr + "/" + tmpName,
+			IsDir:  isDir,
+			Level:  level,
+		}
+		baseDir = append(baseDir, info)
+		if v.IsDir() {
+			listDir(pathStr+"/"+tmpName, level+1)
+		}
+	}
 }
